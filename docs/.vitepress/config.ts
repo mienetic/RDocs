@@ -7,9 +7,10 @@ export default withMermaid(
     title: "Rust ฉบับไทย",
     description: "เรียน Rust แบบสนุก ไม่น่าเบื่อ พร้อมมุกตลก!",
     lang: 'th-TH',
+    base: '/RDocs/',
 
     head: [
-      ['link', { rel: 'icon', href: '/logo.svg' }],
+      ['link', { rel: 'icon', href: '/RDocs/logo.svg' }],
       ['meta', { name: 'theme-color', content: '#F74C00' }],
       ['meta', { name: 'og:type', content: 'website' }],
       ['meta', { name: 'og:title', content: 'Rust ฉบับไทย - เรียน Rust แบบสนุก!' }],
