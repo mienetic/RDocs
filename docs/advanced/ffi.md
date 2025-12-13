@@ -1,6 +1,6 @@
 # FFI - Foreign Function Interface
 
-เชื่อมต่อ Rust กับ C และภาษาอื่น! 🔗
+เชื่อมต่อ Rust กับ C และภาษาอื่น! 
 
 :::tip FFI คือสะพานเชื่อมภาษา
 FFI ช่วยให้ Rust เรียก C libraries หรือให้ภาษาอื่นเรียก Rust ได้!
@@ -15,15 +15,15 @@ FFI ช่วยให้ Rust เรียก C libraries หรือให้
 ```rust
 // ประกาศ external function
 extern "C" {
-    fn abs(x: i32) -> i32;
-    fn sqrt(x: f64) -> f64;
+ fn abs(x: i32) -> i32;
+ fn sqrt(x: f64) -> f64;
 }
 
 fn main() {
-    unsafe {
-        println!("abs(-5) = {}", abs(-5));
-        println!("sqrt(16) = {}", sqrt(16.0));
-    }
+ unsafe {
+ println!("abs(-5) = {}", abs(-5));
+ println!("sqrt(16) = {}", sqrt(16.0));
+ }
 }
 ```
 
@@ -31,18 +31,18 @@ fn main() {
 
 ```rust
 // Link to a specific library
-#[link(name = "m")]  // libm - math library
+#[link(name = "m")] // libm - math library
 extern "C" {
-    fn sin(x: f64) -> f64;
-    fn cos(x: f64) -> f64;
+ fn sin(x: f64) -> f64;
+ fn cos(x: f64) -> f64;
 }
 
 fn main() {
-    unsafe {
-        let pi = std::f64::consts::PI;
-        println!("sin(π/2) = {}", sin(pi / 2.0));
-        println!("cos(0) = {}", cos(0.0));
-    }
+ unsafe {
+ let pi = std::f64::consts::PI;
+ println!("sin(π/2) = {}", sin(pi / 2.0));
+ println!("cos(0) = {}", cos(0.0));
+ }
 }
 ```
 
@@ -67,15 +67,15 @@ use std::os::raw::{c_int, c_char, c_void};
 use std::ffi::{CStr, CString};
 
 extern "C" {
-    fn strlen(s: *const c_char) -> usize;
+ fn strlen(s: *const c_char) -> usize;
 }
 
 fn main() {
-    let s = CString::new("Hello").unwrap();
-    unsafe {
-        let len = strlen(s.as_ptr());
-        println!("Length: {}", len);
-    }
+ let s = CString::new("Hello").unwrap();
+ unsafe {
+ let len = strlen(s.as_ptr());
+ println!("Length: {}", len);
+ }
 }
 ```
 
@@ -87,12 +87,12 @@ use std::os::raw::c_char;
 
 // Rust String -> C string
 fn to_c_string(s: &str) -> CString {
-    CString::new(s).expect("CString conversion failed")
+ CString::new(s).expect("CString conversion failed")
 }
 
 // C string -> Rust &str
 unsafe fn from_c_string(ptr: *const c_char) -> &'static str {
-    CStr::from_ptr(ptr).to_str().unwrap()
+ CStr::from_ptr(ptr).to_str().unwrap()
 }
 ```
 
@@ -106,22 +106,22 @@ unsafe fn from_c_string(ptr: *const c_char) -> &'static str {
 // ใช้ #[repr(C)] เพื่อให้ layout เหมือน C
 #[repr(C)]
 pub struct Point {
-    pub x: f64,
-    pub y: f64,
+ pub x: f64,
+ pub y: f64,
 }
 
 extern "C" {
-    fn calculate_distance(p1: Point, p2: Point) -> f64;
+ fn calculate_distance(p1: Point, p2: Point) -> f64;
 }
 
 fn main() {
-    let p1 = Point { x: 0.0, y: 0.0 };
-    let p2 = Point { x: 3.0, y: 4.0 };
-    
-    unsafe {
-        let dist = calculate_distance(p1, p2);
-        println!("Distance: {}", dist);
-    }
+ let p1 = Point { x: 0.0, y: 0.0 };
+ let p2 = Point { x: 3.0, y: 4.0 };
+ 
+ unsafe {
+ let dist = calculate_distance(p1, p2);
+ println!("Distance: {}", dist);
+ }
 }
 ```
 
@@ -131,13 +131,13 @@ fn main() {
 // เมื่อไม่รู้ layout ของ struct
 #[repr(C)]
 pub struct OpaqueHandle {
-    _private: [u8; 0],  // Zero-sized, can't be instantiated
+ _private: [u8; 0], // Zero-sized, can't be instantiated
 }
 
 extern "C" {
-    fn create_handle() -> *mut OpaqueHandle;
-    fn use_handle(h: *mut OpaqueHandle);
-    fn destroy_handle(h: *mut OpaqueHandle);
+ fn create_handle() -> *mut OpaqueHandle;
+ fn use_handle(h: *mut OpaqueHandle);
+ fn destroy_handle(h: *mut OpaqueHandle);
 }
 ```
 
@@ -148,17 +148,17 @@ extern "C" {
 ```rust
 // C-compatible function pointer
 extern "C" fn rust_callback(value: i32) {
-    println!("Callback called with: {}", value);
+ println!("Callback called with: {}", value);
 }
 
 extern "C" {
-    fn register_callback(cb: extern "C" fn(i32));
+ fn register_callback(cb: extern "C" fn(i32));
 }
 
 fn main() {
-    unsafe {
-        register_callback(rust_callback);
-    }
+ unsafe {
+ register_callback(rust_callback);
+ }
 }
 ```
 
@@ -166,17 +166,17 @@ fn main() {
 
 ```rust
 extern "C" fn callback_with_data(value: i32, user_data: *mut std::ffi::c_void) {
-    unsafe {
-        let counter = user_data as *mut i32;
-        *counter += value;
-    }
+ unsafe {
+ let counter = user_data as *mut i32;
+ *counter += value;
+ }
 }
 
 extern "C" {
-    fn register_callback_ex(
-        cb: extern "C" fn(i32, *mut std::ffi::c_void),
-        user_data: *mut std::ffi::c_void
-    );
+ fn register_callback_ex(
+ cb: extern "C" fn(i32, *mut std::ffi::c_void),
+ user_data: *mut std::ffi::c_void
+ );
 }
 ```
 
@@ -190,15 +190,15 @@ extern "C" {
 // Rust function callable from C
 #[no_mangle]
 pub extern "C" fn add(a: i32, b: i32) -> i32 {
-    a + b
+ a + b
 }
 
 #[no_mangle]
 pub extern "C" fn greet(name: *const std::os::raw::c_char) {
-    use std::ffi::CStr;
-    
-    let name = unsafe { CStr::from_ptr(name) };
-    println!("Hello, {}!", name.to_str().unwrap());
+ use std::ffi::CStr;
+ 
+ let name = unsafe { CStr::from_ptr(name) };
+ println!("Hello, {}!", name.to_str().unwrap());
 }
 ```
 
@@ -239,23 +239,23 @@ use std::ffi::c_int;
 // Return error code
 #[no_mangle]
 pub extern "C" fn divide(a: i32, b: i32, result: *mut i32) -> c_int {
-    if b == 0 {
-        return -1;  // Error code
-    }
-    
-    unsafe {
-        *result = a / b;
-    }
-    0  // Success
+ if b == 0 {
+ return -1; // Error code
+ }
+ 
+ unsafe {
+ *result = a / b;
+ }
+ 0 // Success
 }
 
 // Or return nullable pointer
 #[no_mangle]
 pub extern "C" fn create_data() -> *mut Data {
-    match try_create() {
-        Ok(data) => Box::into_raw(Box::new(data)),
-        Err(_) => std::ptr::null_mut(),
-    }
+ match try_create() {
+ Ok(data) => Box::into_raw(Box::new(data)),
+ Err(_) => std::ptr::null_mut(),
+ }
 }
 ```
 
@@ -269,17 +269,17 @@ pub extern "C" fn create_data() -> *mut Data {
 // Rust creates, C uses, Rust destroys
 #[no_mangle]
 pub extern "C" fn create_string() -> *mut std::os::raw::c_char {
-    let s = CString::new("Hello from Rust").unwrap();
-    s.into_raw()
+ let s = CString::new("Hello from Rust").unwrap();
+ s.into_raw()
 }
 
 #[no_mangle]
 pub extern "C" fn free_string(ptr: *mut std::os::raw::c_char) {
-    if !ptr.is_null() {
-        unsafe {
-            drop(CString::from_raw(ptr));
-        }
-    }
+ if !ptr.is_null() {
+ unsafe {
+ drop(CString::from_raw(ptr));
+ }
+ }
 }
 ```
 
@@ -288,26 +288,26 @@ pub extern "C" fn free_string(ptr: *mut std::os::raw::c_char) {
 ```rust
 #[repr(C)]
 pub struct Data {
-    value: i32,
+ value: i32,
 }
 
 #[no_mangle]
 pub extern "C" fn create_data(value: i32) -> *mut Data {
-    Box::into_raw(Box::new(Data { value }))
+ Box::into_raw(Box::new(Data { value }))
 }
 
 #[no_mangle]
 pub extern "C" fn get_value(data: *const Data) -> i32 {
-    unsafe { (*data).value }
+ unsafe { (*data).value }
 }
 
 #[no_mangle]
 pub extern "C" fn free_data(data: *mut Data) {
-    if !data.is_null() {
-        unsafe {
-            drop(Box::from_raw(data));
-        }
-    }
+ if !data.is_null() {
+ unsafe {
+ drop(Box::from_raw(data));
+ }
+ }
 }
 ```
 
@@ -327,17 +327,17 @@ bindgen = "0.69"
 ```rust
 // build.rs
 fn main() {
-    println!("cargo:rustc-link-lib=mylib");
-    
-    let bindings = bindgen::Builder::default()
-        .header("wrapper.h")
-        .generate()
-        .expect("Unable to generate bindings");
-    
-    let out_path = std::path::PathBuf::from(std::env::var("OUT_DIR").unwrap());
-    bindings
-        .write_to_file(out_path.join("bindings.rs"))
-        .expect("Couldn't write bindings!");
+ println!("cargo:rustc-link-lib=mylib");
+ 
+ let bindings = bindgen::Builder::default()
+ .header("wrapper.h")
+ .generate()
+ .expect("Unable to generate bindings");
+ 
+ let out_path = std::path::PathBuf::from(std::env::var("OUT_DIR").unwrap());
+ bindings
+ .write_to_file(out_path.join("bindings.rs"))
+ .expect("Couldn't write bindings!");
 }
 ```
 
@@ -353,11 +353,16 @@ include!(concat!(env!("OUT_DIR"), "/bindings.rs"));
 
 | Do | Don't |
 |----|-------|
-| ✅ Use `#[repr(C)]` | ❌ Trust C pointers blindly |
-| ✅ Check null pointers | ❌ Assume valid UTF-8 |
-| ✅ Document ownership | ❌ Mix Rust/C allocators |
-| ✅ Use `CString`/`CStr` | ❌ Pass Rust references |
-| ✅ Wrap unsafe in safe API | ❌ Panic across FFI boundary |
+| Use `#[repr(C)]` | Trust C pointers blindly |
+| Check null pointers | Assume valid UTF-8 |
+| Document ownership | Mix Rust/C allocators |
+| Use `CString`/`CStr` | Pass Rust references |
+| Wrap unsafe in safe API | Panic across FFI boundary |
+
+::: danger ห้าม Panic ข้ามภาษา!
+การปล่อยให้ Rust code **panic** ทะลุออกไปหา C (Unwinding across FFI) เป็น **Undefined Behavior (UB)**
+ต้องใช้ `std::panic::catch_unwind` ดัก panic ไว้เสมอที่ Boundary!
+:::
 
 ---
 

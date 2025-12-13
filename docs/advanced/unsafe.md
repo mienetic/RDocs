@@ -4,16 +4,16 @@
 
 ```mermaid
 flowchart TD
-    SAFE["Safe Rust"] -->|"Compiler guarantees"| MEMORY["Memory Safety"]
-    
-    UNSAFE["Unsafe Rust"] --> POWERS["Superpowers"]
-    POWERS --> DEREF["Dereference raw pointers"]
-    POWERS --> FFI["Call C functions"]
-    POWERS --> MUTABLE["Access mutable statics"]
-    POWERS --> TRAIT["Implement unsafe traits"]
-    
-    style SAFE fill:#22c55e,stroke:#15803d,color:#fff
-    style UNSAFE fill:#ef4444,stroke:#b91c1c,color:#fff
+ SAFE["Safe Rust"] -->|"Compiler guarantees"| MEMORY["Memory Safety"]
+ 
+ UNSAFE["Unsafe Rust"] --> POWERS["Superpowers"]
+ POWERS --> DEREF["Dereference raw pointers"]
+ POWERS --> FFI["Call C functions"]
+ POWERS --> MUTABLE["Access mutable statics"]
+ POWERS --> TRAIT["Implement unsafe traits"]
+ 
+ style SAFE fill:#22c55e,stroke:#15803d,color:#fff
+ style UNSAFE fill:#ef4444,stroke:#b91c1c,color:#fff
 ```
 
 :::warning ระวัง!
@@ -52,20 +52,20 @@ flowchart TD
 
 ```rust
 fn main() {
-    let x = 5;
-    
-    // สร้าง raw pointer จาก reference
-    let ptr: *const i32 = &x;
-    let mut_ptr: *mut i32 = &x as *const i32 as *mut i32;
-    
-    println!("Pointer: {:?}", ptr);
-    println!("Address: {:p}", ptr);
-    
-    // Safe part: creating pointers is safe
-    // Unsafe part: dereferencing them
-    unsafe {
-        println!("Value: {}", *ptr);
-    }
+ let x = 5;
+ 
+ // สร้าง raw pointer จาก reference
+ let ptr: *const i32 = &x;
+ let mut_ptr: *mut i32 = &x as *const i32 as *mut i32;
+ 
+ println!("Pointer: {:?}", ptr);
+ println!("Address: {:p}", ptr);
+ 
+ // Safe part: creating pointers is safe
+ // Unsafe part: dereferencing them
+ unsafe {
+ println!("Value: {}", *ptr);
+ }
 }
 ```
 
@@ -77,27 +77,27 @@ fn main() {
 
 ```rust
 fn main() {
-    let mut value = 42;
-    let ptr: *mut i32 = &mut value;
-    
-    unsafe {
-        // Read value
-        println!("Value: {}", *ptr);
-        
-        // Write value
-        *ptr = 100;
-        println!("New value: {}", *ptr);
-        
-        // Pointer arithmetic
-        let arr = [1, 2, 3, 4, 5];
-        let arr_ptr: *const i32 = arr.as_ptr();
-        
-        println!("First: {}", *arr_ptr);
-        println!("Second: {}", *arr_ptr.add(1));
-        println!("Third: {}", *arr_ptr.offset(2));
-    }
-    
-    println!("Final value: {}", value);
+ let mut value = 42;
+ let ptr: *mut i32 = &mut value;
+ 
+ unsafe {
+ // Read value
+ println!("Value: {}", *ptr);
+ 
+ // Write value
+ *ptr = 100;
+ println!("New value: {}", *ptr);
+ 
+ // Pointer arithmetic
+ let arr = [1, 2, 3, 4, 5];
+ let arr_ptr: *const i32 = arr.as_ptr();
+ 
+ println!("First: {}", *arr_ptr);
+ println!("Second: {}", *arr_ptr.add(1));
+ println!("Third: {}", *arr_ptr.offset(2));
+ }
+ 
+ println!("Final value: {}", value);
 }
 ```
 
@@ -111,15 +111,15 @@ fn main() {
 use std::ptr;
 
 fn main() {
-    // Create null pointer
-    let null_ptr: *const i32 = ptr::null();
-    let null_mut_ptr: *mut i32 = ptr::null_mut();
-    
-    // Check for null
-    println!("Is null: {}", null_ptr.is_null());
-    
-    // DANGER: dereferencing null is UB!
-    // unsafe { *null_ptr }  // Undefined Behavior!
+ // Create null pointer
+ let null_ptr: *const i32 = ptr::null();
+ let null_mut_ptr: *mut i32 = ptr::null_mut();
+ 
+ // Check for null
+ println!("Is null: {}", null_ptr.is_null());
+ 
+ // DANGER: dereferencing null is UB!
+ // unsafe { *null_ptr } // Undefined Behavior!
 }
 ```
 
@@ -135,18 +135,23 @@ fn main() {
 
 ```rust
 unsafe fn dangerous() {
-    println!("This is dangerous!");
+ println!("This is dangerous!");
 }
 
 fn main() {
-    // Must wrap in unsafe block
-    unsafe {
-        dangerous();
-    }
+ // Must wrap in unsafe block
+ unsafe {
+ dangerous();
+ }
 }
 ```
 
 </RustPlayground>
+
+::: best-practice
+**เขียน `# Safety` Comment เสมอ**
+ทุกครั้งที่ใช้ `unsafe` ต้องเขียนอธิบายว่าทำไมถึงปลอดภัย (Invariants คืออะไร) เพื่อให้คนมาอ่านต่อ (หรือตัวเราในอนาคต) เข้าใจและตรวจสอบได้ง่าย
+:::
 
 ### 3.2 Safe Abstraction Over Unsafe
 
@@ -154,25 +159,25 @@ fn main() {
 
 ```rust
 fn split_at_mut(slice: &mut [i32], mid: usize) -> (&mut [i32], &mut [i32]) {
-    let len = slice.len();
-    let ptr = slice.as_mut_ptr();
-    
-    assert!(mid <= len);
-    
-    unsafe {
-        (
-            std::slice::from_raw_parts_mut(ptr, mid),
-            std::slice::from_raw_parts_mut(ptr.add(mid), len - mid),
-        )
-    }
+ let len = slice.len();
+ let ptr = slice.as_mut_ptr();
+ 
+ assert!(mid <= len);
+ 
+ unsafe {
+ (
+ std::slice::from_raw_parts_mut(ptr, mid),
+ std::slice::from_raw_parts_mut(ptr.add(mid), len - mid),
+ )
+ }
 }
 
 fn main() {
-    let mut arr = [1, 2, 3, 4, 5];
-    let (left, right) = split_at_mut(&mut arr, 2);
-    
-    println!("Left: {:?}", left);   // [1, 2]
-    println!("Right: {:?}", right); // [3, 4, 5]
+ let mut arr = [1, 2, 3, 4, 5];
+ let (left, right) = split_at_mut(&mut arr, 2);
+ 
+ println!("Left: {:?}", left); // [1, 2]
+ println!("Right: {:?}", right); // [3, 4, 5]
 }
 ```
 
@@ -190,19 +195,19 @@ fn main() {
 static mut COUNTER: u32 = 0;
 
 fn increment() {
-    unsafe {
-        COUNTER += 1;
-    }
+ unsafe {
+ COUNTER += 1;
+ }
 }
 
 fn main() {
-    increment();
-    increment();
-    increment();
-    
-    unsafe {
-        println!("Counter: {}", COUNTER);
-    }
+ increment();
+ increment();
+ increment();
+ 
+ unsafe {
+ println!("Counter: {}", COUNTER);
+ }
 }
 ```
 
@@ -217,7 +222,7 @@ use std::sync::atomic::{AtomicU32, Ordering};
 static COUNTER: AtomicU32 = AtomicU32::new(0);
 
 fn increment() {
-    COUNTER.fetch_add(1, Ordering::SeqCst);
+ COUNTER.fetch_add(1, Ordering::SeqCst);
 }
 ```
 :::
@@ -231,14 +236,14 @@ fn increment() {
 ```rust
 // Link with C library
 extern "C" {
-    fn abs(input: i32) -> i32;
-    fn strlen(s: *const i8) -> usize;
+ fn abs(input: i32) -> i32;
+ fn strlen(s: *const i8) -> usize;
 }
 
 fn main() {
-    unsafe {
-        println!("abs(-5) = {}", abs(-5));
-    }
+ unsafe {
+ println!("abs(-5) = {}", abs(-5));
+ }
 }
 ```
 
@@ -248,7 +253,7 @@ fn main() {
 // Can be called from C code
 #[no_mangle]
 pub extern "C" fn rust_function(x: i32) -> i32 {
-    x * 2
+ x * 2
 }
 ```
 
@@ -260,17 +265,17 @@ pub extern "C" fn rust_function(x: i32) -> i32 {
 use std::ffi::{CStr, CString};
 
 fn main() {
-    // Rust String -> C String
-    let rust_string = "Hello from Rust";
-    let c_string = CString::new(rust_string).unwrap();
-    let ptr = c_string.as_ptr();
-    
-    // C String -> Rust &str
-    unsafe {
-        let c_str = CStr::from_ptr(ptr);
-        let rust_str = c_str.to_str().unwrap();
-        println!("Got back: {}", rust_str);
-    }
+ // Rust String -> C String
+ let rust_string = "Hello from Rust";
+ let c_string = CString::new(rust_string).unwrap();
+ let ptr = c_string.as_ptr();
+ 
+ // C String -> Rust &str
+ unsafe {
+ let c_str = CStr::from_ptr(ptr);
+ let rust_str = c_str.to_str().unwrap();
+ println!("Got back: {}", rust_str);
+ }
 }
 ```
 
@@ -296,29 +301,29 @@ unsafe impl Sync for MyType {}
 
 ```rust
 unsafe trait Zeroable {
-    fn zeroed() -> Self;
+ fn zeroed() -> Self;
 }
 
 unsafe impl Zeroable for i32 {
-    fn zeroed() -> Self {
-        0
-    }
+ fn zeroed() -> Self {
+ 0
+ }
 }
 
 unsafe impl Zeroable for f64 {
-    fn zeroed() -> Self {
-        0.0
-    }
+ fn zeroed() -> Self {
+ 0.0
+ }
 }
 
 fn create_zeroed<T: Zeroable>() -> T {
-    T::zeroed()
+ T::zeroed()
 }
 
 fn main() {
-    let x: i32 = create_zeroed();
-    let y: f64 = create_zeroed();
-    println!("x = {}, y = {}", x, y);
+ let x: i32 = create_zeroed();
+ let y: f64 = create_zeroed();
+ println!("x = {}, y = {}", x, y);
 }
 ```
 
@@ -333,18 +338,18 @@ fn main() {
 ```rust
 #[repr(C)]
 union IntOrFloat {
-    i: i32,
-    f: f32,
+ i: i32,
+ f: f32,
 }
 
 fn main() {
-    let u = IntOrFloat { i: 42 };
-    
-    unsafe {
-        // Reading union field requires unsafe
-        println!("As int: {}", u.i);
-        println!("As float: {}", u.f);  // Reinterpret bits
-    }
+ let u = IntOrFloat { i: 42 };
+ 
+ unsafe {
+ // Reading union field requires unsafe
+ println!("As int: {}", u.i);
+ println!("As float: {}", u.f); // Reinterpret bits
+ }
 }
 ```
 
@@ -359,14 +364,14 @@ fn main() {
 ```rust
 #[cfg(target_arch = "x86_64")]
 fn main() {
-    let x: u64;
-    unsafe {
-        std::arch::asm!(
-            "mov {}, 42",
-            out(reg) x,
-        );
-    }
-    println!("x = {}", x);
+ let x: u64;
+ unsafe {
+ std::arch::asm!(
+ "mov {}, 42",
+ out(reg) x,
+ );
+ }
+ println!("x = {}", x);
 }
 ```
 
@@ -379,22 +384,22 @@ use std::mem;
 
 #[repr(C)]
 struct CStruct {
-    a: u8,
-    b: u32,
-    c: u8,
+ a: u8,
+ b: u32,
+ c: u8,
 }
 
 #[repr(packed)]
 struct PackedStruct {
-    a: u8,
-    b: u32,
-    c: u8,
+ a: u8,
+ b: u32,
+ c: u8,
 }
 
 fn main() {
-    println!("CStruct size: {}", mem::size_of::<CStruct>());
-    println!("PackedStruct size: {}", mem::size_of::<PackedStruct>());
-    println!("CStruct align: {}", mem::align_of::<CStruct>());
+ println!("CStruct size: {}", mem::size_of::<CStruct>());
+ println!("PackedStruct size: {}", mem::size_of::<PackedStruct>());
+ println!("CStruct align: {}", mem::align_of::<CStruct>());
 }
 ```
 
@@ -424,12 +429,17 @@ fn main() {
 
 ### 9.3 Unsafe Code Review Checklist
 
-1. ✅ Is unsafe actually needed?
-2. ✅ Are invariants documented?
-3. ✅ Is the unsafe block minimal?
-4. ✅ Are raw pointers valid?
-5. ✅ Is there potential for UB?
-6. ✅ Is memory properly freed?
+1. Is unsafe actually needed?
+2. Are invariants documented?
+3. Is the unsafe block minimal?
+4. Are raw pointers valid?
+5. Is there potential for UB?
+6. Is memory properly freed?
+
+::: recommendation
+**ใช้ Miri ตรวจสอบ Unsafe Code**
+cargo miri run เป็นเครื่องมือเทพที่ช่วยจับ Undefined Behavior (UB) ที่ unit test ปกติมองไม่เห็น แนะนำให้รันทุกครั้งที่มีการแก้ unsafe block
+:::
 
 ---
 

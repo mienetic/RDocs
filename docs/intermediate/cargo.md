@@ -4,17 +4,17 @@ Cargo คือ package manager และ build system ของ Rust!
 
 ```mermaid
 flowchart LR
-    CARGO["Cargo"] --> BUILD["cargo build"]
-    CARGO --> RUN["cargo run"]
-    CARGO --> TEST["cargo test"]
-    CARGO --> DEPS["Dependencies"]
-    
-    DEPS --> CRATES["crates.io"]
-    DEPS --> GIT["Git repos"]
-    DEPS --> LOCAL["Local paths"]
-    
-    style CARGO fill:#f59e0b,stroke:#d97706,color:#fff
-    style CRATES fill:#22c55e,stroke:#15803d,color:#fff
+ CARGO["Cargo"] --> BUILD["cargo build"]
+ CARGO --> RUN["cargo run"]
+ CARGO --> TEST["cargo test"]
+ CARGO --> DEPS["Dependencies"]
+ 
+ DEPS --> CRATES["crates.io"]
+ DEPS --> GIT["Git repos"]
+ DEPS --> LOCAL["Local paths"]
+ 
+ style CARGO fill:#f59e0b,stroke:#d97706,color:#fff
+ style CRATES fill:#22c55e,stroke:#15803d,color:#fff
 ```
 
 ---
@@ -37,11 +37,11 @@ tree my_project
 
 ```
 my_project/
-├── Cargo.toml    # Package configuration
-├── Cargo.lock    # Dependency lock file
-└── src/
-    └── main.rs   # Entry point (binary)
-    # หรือ lib.rs (library)
+ Cargo.toml # Package configuration
+ Cargo.lock # Dependency lock file
+ src/
+ main.rs # Entry point (binary)
+ # หรือ lib.rs (library)
 ```
 
 ### 1.2 คำสั่งพื้นฐาน
@@ -175,7 +175,7 @@ cargo update
 cargo update -p serde
 
 # Show outdated packages
-cargo outdated  # requires cargo-outdated
+cargo outdated # requires cargo-outdated
 ```
 
 ---
@@ -223,18 +223,18 @@ my_library = { version = "1.0", default-features = false, features = ["json"] }
 // In code
 #[cfg(feature = "json")]
 pub mod json_support {
-    use serde_json::Value;
-    
-    pub fn parse(s: &str) -> Value {
-        serde_json::from_str(s).unwrap()
-    }
+ use serde_json::Value;
+ 
+ pub fn parse(s: &str) -> Value {
+ serde_json::from_str(s).unwrap()
+ }
 }
 
 #[cfg(feature = "async")]
 pub mod async_support {
-    pub async fn fetch() -> String {
-        "async result".to_string()
-    }
+ pub async fn fetch() -> String {
+ "async result".to_string()
+ }
 }
 ```
 
@@ -246,17 +246,17 @@ pub mod async_support {
 
 ```
 my_workspace/
-├── Cargo.toml        # Workspace root
-├── crates/
-│   ├── core/
-│   │   ├── Cargo.toml
-│   │   └── src/lib.rs
-│   ├── cli/
-│   │   ├── Cargo.toml
-│   │   └── src/main.rs
-│   └── web/
-│       ├── Cargo.toml
-│       └── src/main.rs
+ Cargo.toml # Workspace root
+ crates/
+ core/
+ Cargo.toml
+ src/lib.rs
+ cli/
+ Cargo.toml
+ src/main.rs
+ web/
+ Cargo.toml
+ src/main.rs
 ```
 
 ### 5.2 Workspace Cargo.toml
@@ -265,9 +265,9 @@ my_workspace/
 # Root Cargo.toml
 [workspace]
 members = [
-    "crates/core",
-    "crates/cli",
-    "crates/web",
+ "crates/core",
+ "crates/cli",
+ "crates/web",
 ]
 
 # Shared dependencies
@@ -288,13 +288,13 @@ license = "MIT"
 [package]
 name = "my-cli"
 version = "0.1.0"
-edition.workspace = true    # Inherit from workspace
+edition.workspace = true # Inherit from workspace
 authors.workspace = true
 license.workspace = true
 
 [dependencies]
 my-core = { path = "../core" }
-serde.workspace = true      # Use workspace version
+serde.workspace = true # Use workspace version
 ```
 
 ---
@@ -315,21 +315,21 @@ serde.workspace = true      # Use workspace version
 ```toml
 # Cargo.toml
 [profile.dev]
-opt-level = 0        # No optimization
-debug = true         # Debug info
+opt-level = 0 # No optimization
+debug = true # Debug info
 
 [profile.release]
-opt-level = 3        # Maximum optimization
-lto = true           # Link-time optimization
-strip = true         # Strip symbols
+opt-level = 3 # Maximum optimization
+lto = true # Link-time optimization
+strip = true # Strip symbols
 
 [profile.dev.package."*"]
-opt-level = 2        # Optimize dependencies in dev
+opt-level = 2 # Optimize dependencies in dev
 
 # Custom profile
 [profile.profiling]
 inherits = "release"
-debug = true         # Keep debug info for profiling
+debug = true # Keep debug info for profiling
 ```
 
 ---
@@ -431,7 +431,7 @@ cargo login <your-api-token>
 
 # Verify package
 cargo publish --dry-run
-cargo package --list  # List files
+cargo package --list # List files
 ```
 
 ### 8.2 Publishing
@@ -452,6 +452,12 @@ cargo yank --version 1.0.0 --undo
 ## 9. Best Practices
 
 ### 9.1 Cargo.toml Checklist
+
+::: best-practice
+**Cargo.lock: Commit หรือ Ignore?**
+- **Binary Project (Application):** ✅ **Commit** `Cargo.lock` เพื่อให้ทุกคน (และ Production) ใช้ dependency version เดียวกันเป๊ะๆ
+- **Library Project:** ❌ **Ignore** `Cargo.lock` เพื่อให้แน่ใจว่า Library ของเราทำงานได้กับ dependency version ใหม่ๆ ที่ user ปลายทางอาจจะใช้
+:::
 
 | Item | Recommendation |
 |------|----------------|

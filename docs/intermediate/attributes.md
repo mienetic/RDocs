@@ -4,20 +4,20 @@ Attributes คือ metadata ที่ใช้กำหนดพฤติก�
 
 ```mermaid
 flowchart TD
-    ATTR["Attributes"] --> OUTER["Outer #[...]"]
-    ATTR --> INNER["Inner #![...]"]
-    
-    OUTER --> DERIVE["#[derive(...)]"]
-    OUTER --> CFG["#[cfg(...)]"]
-    OUTER --> TEST["#[test]"]
-    OUTER --> ALLOW["#[allow(...)]"]
-    
-    INNER --> CRATE["#![crate_name]"]
-    INNER --> FEAT["#![feature(...)]"]
-    
-    style ATTR fill:#3b82f6,stroke:#1d4ed8,color:#fff
-    style DERIVE fill:#22c55e,stroke:#15803d,color:#fff
-    style CFG fill:#f59e0b,stroke:#d97706,color:#fff
+ ATTR["Attributes"] --> OUTER["Outer #[...]"]
+ ATTR --> INNER["Inner #![...]"]
+ 
+ OUTER --> DERIVE["#[derive(...)]"]
+ OUTER --> CFG["#[cfg(...)]"]
+ OUTER --> TEST["#[test]"]
+ OUTER --> ALLOW["#[allow(...)]"]
+ 
+ INNER --> CRATE["#![crate_name]"]
+ INNER --> FEAT["#![feature(...)]"]
+ 
+ style ATTR fill:#3b82f6,stroke:#1d4ed8,color:#fff
+ style DERIVE fill:#22c55e,stroke:#15803d,color:#fff
+ style CFG fill:#f59e0b,stroke:#d97706,color:#fff
 ```
 
 ---
@@ -40,12 +40,12 @@ flowchart TD
 // Outer attribute - applies to struct
 #[derive(Debug)]
 struct Person {
-    name: String,
+ name: String,
 }
 
 fn main() {
-    let p = Person { name: String::from("Alice") };
-    println!("{:?}", p);
+ let p = Person { name: String::from("Alice") };
+ println!("{:?}", p);
 }
 ```
 
@@ -63,23 +63,23 @@ fn main() {
 // Derive multiple traits
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Default)]
 struct Point {
-    x: i32,
-    y: i32,
+ x: i32,
+ y: i32,
 }
 
 fn main() {
-    let p1 = Point { x: 1, y: 2 };
-    let p2 = p1.clone();
-    
-    // Debug
-    println!("{:?}", p1);
-    
-    // PartialEq
-    println!("p1 == p2: {}", p1 == p2);
-    
-    // Default
-    let origin = Point::default();
-    println!("Origin: {:?}", origin);
+ let p1 = Point { x: 1, y: 2 };
+ let p2 = p1.clone();
+ 
+ // Debug
+ println!("{:?}", p1);
+ 
+ // PartialEq
+ println!("p1 == p2: {}", p1 == p2);
+ 
+ // Default
+ let origin = Point::default();
+ println!("Origin: {:?}", origin);
 }
 ```
 
@@ -111,23 +111,23 @@ fn main() {
 // Only compile on Windows
 #[cfg(target_os = "windows")]
 fn platform_specific() {
-    println!("Running on Windows");
+ println!("Running on Windows");
 }
 
 // Only compile on Linux/Mac
 #[cfg(not(target_os = "windows"))]
 fn platform_specific() {
-    println!("Running on Unix-like system");
+ println!("Running on Unix-like system");
 }
 
 // Feature flags
 #[cfg(feature = "advanced")]
 fn advanced_feature() {
-    println!("Advanced feature enabled");
+ println!("Advanced feature enabled");
 }
 
 fn main() {
-    platform_specific();
+ platform_specific();
 }
 ```
 
@@ -142,16 +142,16 @@ fn main() {
 #[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
 #[derive(Debug)]
 struct Config {
-    name: String,
-    value: i32,
+ name: String,
+ value: i32,
 }
 
 fn main() {
-    let c = Config { 
-        name: String::from("test"), 
-        value: 42 
-    };
-    println!("{:?}", c);
+ let c = Config { 
+ name: String::from("test"), 
+ value: 42 
+ };
+ println!("{:?}", c);
 }
 ```
 
@@ -179,23 +179,23 @@ fn main() {
 // Allow unused variables in this function
 #[allow(unused_variables)]
 fn demo() {
-    let x = 5;  // No warning
+ let x = 5; // No warning
 }
 
 // Deny unused imports in this module
 #[deny(unused_imports)]
 mod strict {
-    // use std::io;  // Would cause compile error!
+ // use std::io; // Would cause compile error!
 }
 
 // Warn on dead code
 #[warn(dead_code)]
 fn unused_function() {
-    // Will show warning
+ // Will show warning
 }
 
 fn main() {
-    demo();
+ demo();
 }
 ```
 
@@ -222,33 +222,33 @@ fn main() {
 
 ```rust
 fn add(a: i32, b: i32) -> i32 {
-    a + b
+ a + b
 }
 
 #[cfg(test)]
 mod tests {
-    use super::*;
-    
-    #[test]
-    fn test_add() {
-        assert_eq!(add(2, 3), 5);
-    }
-    
-    #[test]
-    #[ignore]
-    fn slow_test() {
-        // Ignored unless --ignored flag
-    }
-    
-    #[test]
-    #[should_panic(expected = "divide by zero")]
-    fn test_panic() {
-        let _ = 1 / 0;
-    }
+ use super::*;
+ 
+ #[test]
+ fn test_add() {
+ assert_eq!(add(2, 3), 5);
+ }
+ 
+ #[test]
+ #[ignore]
+ fn slow_test() {
+ // Ignored unless --ignored flag
+ }
+ 
+ #[test]
+ #[should_panic(expected = "divide by zero")]
+ fn test_panic() {
+ let _ = 1 / 0;
+ }
 }
 
 fn main() {
-    println!("2 + 3 = {}", add(2, 3));
+ println!("2 + 3 = {}", add(2, 3));
 }
 ```
 
@@ -269,24 +269,24 @@ fn main() {
 ```rust
 #[must_use = "this Result should be handled"]
 fn important_operation() -> Result<(), String> {
-    Ok(())
+ Ok(())
 }
 
 #[deprecated(since = "1.0.0", note = "use new_function instead")]
 fn old_function() {
-    println!("Old!");
+ println!("Old!");
 }
 
 #[inline]
 fn fast_function(x: i32) -> i32 {
-    x * 2
+ x * 2
 }
 
 fn main() {
-    let _ = important_operation();  // OK with let _
-    // important_operation();  // Warning!
-    
-    println!("{}", fast_function(5));
+ let _ = important_operation(); // OK with let _
+ // important_operation(); // Warning!
+ 
+ println!("{}", fast_function(5));
 }
 ```
 
@@ -304,29 +304,29 @@ fn main() {
 // C-compatible layout
 #[repr(C)]
 struct CStruct {
-    a: u8,
-    b: u32,
-    c: u8,
+ a: u8,
+ b: u32,
+ c: u8,
 }
 
 // Specify size
 #[repr(u8)]
 enum Status {
-    Active = 0,
-    Inactive = 1,
-    Pending = 2,
+ Active = 0,
+ Inactive = 1,
+ Pending = 2,
 }
 
 // Packed (no padding)
 #[repr(packed)]
 struct Packed {
-    a: u8,
-    b: u32,
+ a: u8,
+ b: u32,
 }
 
 fn main() {
-    println!("CStruct size: {}", std::mem::size_of::<CStruct>());
-    println!("Status size: {}", std::mem::size_of::<Status>());
+ println!("CStruct size: {}", std::mem::size_of::<CStruct>());
+ println!("Status size: {}", std::mem::size_of::<Status>());
 }
 ```
 
@@ -362,16 +362,16 @@ fn main() {
 /// assert_eq!(result, 5);
 /// ```
 pub fn add(a: i32, b: i32) -> i32 {
-    a + b
+ a + b
 }
 
 #[doc = "This is an alternative way to write docs"]
 pub fn subtract(a: i32, b: i32) -> i32 {
-    a - b
+ a - b
 }
 
 fn main() {
-    println!("{}", add(2, 3));
+ println!("{}", add(2, 3));
 }
 ```
 

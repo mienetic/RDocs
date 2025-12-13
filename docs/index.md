@@ -4,17 +4,20 @@ layout: home
 hero:
   name: "Rust ฉบับไทย"
   text: "เรียน Rust แบบสนุก ไม่น่าเบื่อ!"
-  tagline: เว็บสอน Rust ภาษาไทย ครบ 49 บทเรียน ตั้งแต่มือใหม่จนถึงมือโปร พร้อม Interactive Playground!
+  tagline: เว็บสอน Rust ภาษาไทย ครบ 49 บทเรียน พร้อม Best Practices ระดับ Production และ Interactive Playground!
   image:
     src: /logo.svg
     alt: Ferris the Crab
   actions:
     - theme: brand
-      text: เริ่มเรียนเลย 🚀
+      text: เริ่มเรียนเลย
       link: /beginner/
     - theme: alt
       text: ดู Roadmap
       link: /beginner/getting-started
+    - theme: alt
+      text: 📜 Cheatsheet
+      link: /cheatsheet
 
 features:
   - icon:
@@ -40,43 +43,44 @@ features:
 
   - icon:
       src: /icons/bolt.svg
-    title: เร็วจี๊ด ⚡
+    title: เร็วจี๊ด
     details: Rust เร็วพอๆ กับ C/C++ แต่เขียนปลอดภัยกว่าเพราะมี Borrow Checker คอยดูแล
 
   - icon:
       src: /icons/shield.svg
-    title: ปลอดภัยต่อ Memory 🛡️
+    title: ปลอดภัยต่อ Memory
     details: ไม่มี null pointer, ไม่มี data race - Compiler ช่วยจับ bug ก่อน runtime
 
   - icon:
       src: /icons/target.svg
-    title: ภาษาไทย 100% 🇹🇭
-    details: เนื้อหาเป็นภาษาไทยทั้งหมด พร้อม Google Font ไทยที่อ่านง่าย!
+    title: อัดแน่นด้วย Pros Tips
+    details: สอนวิธีคิดแบบ Rustacean พร้อม Best Practices และจุดระวัง (Pitfalls) ที่หาอ่านยาก ให้คุณเขียน Code ระดับ Production ได้จริง
+
 ---
 
 <style>
 :root {
-  --vp-home-hero-name-color: transparent;
-  --vp-home-hero-name-background: linear-gradient(135deg, #F74C00 0%, #FF8533 50%, #FFB366 100%);
-  
-  --vp-home-hero-image-background-image: linear-gradient(135deg, #F74C00 10%, #FF8533 50%, #FFB366 90%);
-  --vp-home-hero-image-filter: blur(72px);
+ --vp-home-hero-name-color: transparent;
+ --vp-home-hero-name-background: linear-gradient(135deg, #F74C00 0%, #FF8533 50%, #FFB366 100%);
+ 
+ --vp-home-hero-image-background-image: linear-gradient(135deg, #F74C00 10%, #FF8533 50%, #FFB366 90%);
+ --vp-home-hero-image-filter: blur(72px);
 }
 
 .VPHero .VPImage {
-  max-width: 200px;
-  max-height: 200px;
+ max-width: 200px;
+ max-height: 200px;
 }
 
 @media (min-width: 640px) {
-  .VPHero .VPImage {
-    max-width: 280px;
-    max-height: 280px;
-  }
+ .VPHero .VPImage {
+ max-width: 280px;
+ max-height: 280px;
+ }
 }
 </style>
 
-## ทำไมต้องเรียน Rust? 🤔
+## ทำไมต้องเรียน Rust?
 
 > "ถ้า C++ คือดาบที่คมมากแต่ตัดมือตัวเองได้ง่าย Rust ก็คือดาบที่คมเท่ากันแต่มีระบบล็อคนิรภัยกันตัดมือ!"
 
@@ -90,7 +94,7 @@ Rust เป็นภาษาที่ได้รับความนิยม
 | **Cargo** | Package manager ที่ดีที่สุดในโลก (ไม่ได้โม้) |
 | **Zero-cost Abstractions** | เขียน code สวยๆ ได้โดยไม่สูญเสีย performance |
 
-## ลองเลย! 🎮
+## ลองเลย!
 
 :::tip Interactive Playground
 คลิกปุ่ม Run เพื่อรันโค้ดได้เลยบน Browser!
@@ -101,81 +105,35 @@ Rust เป็นภาษาที่ได้รับความนิยม
 ```rust
 // ลองโค้ดง่ายๆ กันก่อน!
 fn main() {
-    // สวัสดีชาวโลก!
-    println!("สวัสดี Rust! 🦀");
-    
-    // ลองเล่นกับตัวแปร
-    let name = "Ferris"; // ชื่อมาสคอตของ Rust
-    println!("ยินดีต้อนรับ {}!", name);
-    
-    // Pattern matching
-    let level = 1;
-    match level {
-        1 => println!("เริ่มต้น! 🌱"),
-        2 => println!("ระดับกลาง! 🌳"),
-        3 => println!("ระดับสูง! ⛰️"),
-        _ => println!("มาสเตอร์! 🏆"),
-    }
+ // สวัสดีชาวโลก!
+ println!("สวัสดี Rust! ");
+ 
+ // ลองเล่นกับตัวแปร
+ let name = "Ferris"; // ชื่อมาสคอตของ Rust
+ println!("ยินดีต้อนรับ {}!", name);
+ 
+ // Pattern matching
+ let level = 1;
+ match level {
+ 1 => println!("เริ่มต้น!"),
+ 2 => println!("ระดับกลาง!"),
+ 3 => println!("ระดับสูง! "),
+ _ => println!("มาสเตอร์!"),
+ }
 }
 ```
 
 </RustPlayground>
 
-## Roadmap การเรียน 🗺️
+## Roadmap การเรียน
 
-```
-Beginner (2-3 สัปดาห์) - 12 บทเรียน
-   ├── ติดตั้ง Rust 🛠️
-   ├── Hello World
-   ├── Guessing Game 🎮
-   ├── Comments & Docs
-   ├── Variables & Types
-   ├── Option & Result
-   ├── Functions
-   ├── Control Flow
-   ├── Pattern Matching
-   ├── Ownership (สำคัญมาก! 💖)
-   └── Debugging
-          ↓
-Intermediate (3-4 สัปดาห์) - 19 บทเรียน
-   ├── Cargo 📦
-   ├── Structs & Enums
-   ├── Error Handling
-   ├── Collections
-   ├── Strings
-   ├── Modules
-   ├── Traits & Generics
-   ├── Testing ✅
-   ├── Iterators
-   ├── File I/O
-   ├── Networking 🌐
-   ├── Date & Time
-   ├── Regex
-   └── Serde & JSON
-          ↓
-Advanced (4-6 สัปดาห์) - 18 บทเรียน
-   ├── Lifetimes
-   ├── Smart Pointers
-   ├── Memory Model 🧠
-   ├── Interior Mutability
-   ├── Concurrency 🧵
-   ├── Async/Await
-   ├── Macros
-   ├── CLI Development 💻
-   ├── Web Development 🌐
-   ├── WebAssembly 🕸️
-   ├── FFI
-   ├── Embedded 🔌
-   └── Performance ⚡
-          ↓
-      Rust Master! 🏆
-```
+<Roadmap />
 
 ---
 
 <div style="text-align: center; margin-top: 40px;">
 
-### พร้อมแล้วใช่ไหม? 💪
+### พร้อมแล้วใช่ไหม?
 
 [เริ่มเรียน Rust เลย!](/beginner/getting-started)
 

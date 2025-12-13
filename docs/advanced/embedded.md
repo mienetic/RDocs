@@ -1,6 +1,6 @@
 # Embedded Rust
 
-เขียน Rust สำหรับ Microcontrollers! 🔌
+เขียน Rust สำหรับ Microcontrollers! 
 
 :::tip Rust สำหรับ Embedded = Memory Safety ที่ hardware level!
 ไม่มี garbage collector, ไม่มี runtime - เหมาะสำหรับ resource-constrained devices!
@@ -22,15 +22,21 @@ use core::panic::PanicInfo;
 // ต้องกำหนด panic handler เอง
 #[panic_handler]
 fn panic(_info: &PanicInfo) -> ! {
-    loop {}
+ loop {}
 }
 
 // Entry point
 #[no_mangle]
 pub extern "C" fn _start() -> ! {
-    loop {}
+ loop {}
 }
 ```
+
+::: pitfall
+**Panic Handler Must Never Return**
+ฟังก์ชัน `panic_handler` ต้องมี return type เป็น `!` (Never Type) คือห้ามจบการทำงาน
+ปกติใน Embedded เรามักใช้ `loop {}` หรือ reset chip ไปเลย
+:::
 
 ### 1.2 std vs core vs alloc
 
@@ -55,19 +61,19 @@ rustup target add thumbv7m-none-eabi
 
 # ARM Cortex-M4/M7 (thumbv7em)
 rustup target add thumbv7em-none-eabi
-rustup target add thumbv7em-none-eabihf  # with hardware float
+rustup target add thumbv7em-none-eabihf # with hardware float
 ```
 
 ### 2.2 Project Structure
 
 ```
 my-embedded-project/
-├── .cargo/
-│   └── config.toml
-├── src/
-│   └── main.rs
-├── memory.x          # Memory layout
-└── Cargo.toml
+ .cargo/
+ config.toml
+ src/
+ main.rs
+ memory.x # Memory layout
+ Cargo.toml
 ```
 
 ### 2.3 Cargo.toml
@@ -118,28 +124,28 @@ use stm32f4xx_hal::{pac, prelude::*};
 
 #[entry]
 fn main() -> ! {
-    // Get peripherals
-    let dp = pac::Peripherals::take().unwrap();
-    let cp = cortex_m::Peripherals::take().unwrap();
-    
-    // Configure clocks
-    let rcc = dp.RCC.constrain();
-    let clocks = rcc.cfgr.sysclk(48.MHz()).freeze();
-    
-    // Configure GPIO
-    let gpioc = dp.GPIOC.split();
-    let mut led = gpioc.pc13.into_push_pull_output();
-    
-    // Delay provider
-    let mut delay = cp.SYST.delay(&clocks);
-    
-    // Blink forever
-    loop {
-        led.set_high();
-        delay.delay_ms(500u32);
-        led.set_low();
-        delay.delay_ms(500u32);
-    }
+ // Get peripherals
+ let dp = pac::Peripherals::take().unwrap();
+ let cp = cortex_m::Peripherals::take().unwrap();
+ 
+ // Configure clocks
+ let rcc = dp.RCC.constrain();
+ let clocks = rcc.cfgr.sysclk(48.MHz()).freeze();
+ 
+ // Configure GPIO
+ let gpioc = dp.GPIOC.split();
+ let mut led = gpioc.pc13.into_push_pull_output();
+ 
+ // Delay provider
+ let mut delay = cp.SYST.delay(&clocks);
+ 
+ // Blink forever
+ loop {
+ led.set_high();
+ delay.delay_ms(500u32);
+ led.set_low();
+ delay.delay_ms(500u32);
+ }
 }
 ```
 
@@ -159,7 +165,7 @@ led.toggle();
 // Input
 let button = gpioa.pa0.into_pull_up_input();
 if button.is_high() {
-    // Button pressed
+ // Button pressed
 }
 
 // Input with interrupt
@@ -178,10 +184,10 @@ let tx = gpioa.pa2.into_alternate();
 let rx = gpioa.pa3.into_alternate();
 
 let mut serial = Serial::new(
-    dp.USART2,
-    (tx, rx),
-    Config::default().baudrate(115_200.bps()),
-    &clocks,
+ dp.USART2,
+ (tx, rx),
+ Config::default().baudrate(115_200.bps()),
+ &clocks,
 );
 
 // Write
@@ -221,16 +227,16 @@ let miso = gpioa.pa6.into_alternate();
 let mosi = gpioa.pa7.into_alternate();
 
 let mode = Mode {
-    polarity: Polarity::IdleLow,
-    phase: Phase::CaptureOnFirstTransition,
+ polarity: Polarity::IdleLow,
+ phase: Phase::CaptureOnFirstTransition,
 };
 
 let mut spi = Spi::new(
-    dp.SPI1,
-    (sck, miso, mosi),
-    mode,
-    1.MHz(),
-    &clocks,
+ dp.SPI1,
+ (sck, miso, mosi),
+ mode,
+ 1.MHz(),
+ &clocks,
 );
 
 // Transfer
@@ -250,25 +256,25 @@ static mut COUNTER: u32 = 0;
 
 #[stm32_interrupt]
 fn EXTI0() {
-    unsafe {
-        COUNTER += 1;
-    }
-    
-    // Clear interrupt flag
-    // ...
+ unsafe {
+ COUNTER += 1;
+ }
+ 
+ // Clear interrupt flag
+ // ...
 }
 
 fn main() -> ! {
-    // Enable interrupt
-    unsafe {
-        cortex_m::peripheral::NVIC::unmask(stm32_interrupt::EXTI0);
-    }
-    
-    loop {
-        // Read counter safely
-        let count = interrupt::free(|_cs| unsafe { COUNTER });
-        // ...
-    }
+ // Enable interrupt
+ unsafe {
+ cortex_m::peripheral::NVIC::unmask(stm32_interrupt::EXTI0);
+ }
+ 
+ loop {
+ // Read counter safely
+ let count = interrupt::free(|_cs| unsafe { COUNTER });
+ // ...
+ }
 }
 ```
 
@@ -282,8 +288,8 @@ fn main() -> ! {
 /* memory.x */
 MEMORY
 {
-    FLASH : ORIGIN = 0x08000000, LENGTH = 512K
-    RAM : ORIGIN = 0x20000000, LENGTH = 128K
+ FLASH : ORIGIN = 0x08000000, LENGTH = 512K
+ RAM : ORIGIN = 0x20000000, LENGTH = 128K
 }
 ```
 
@@ -322,35 +328,35 @@ use rtic::app;
 
 #[app(device = stm32f4xx_hal::pac, peripherals = true)]
 mod app {
-    use stm32f4xx_hal::gpio::{Output, PC13, PushPull};
-    
-    #[shared]
-    struct Shared {
-        counter: u32,
-    }
-    
-    #[local]
-    struct Local {
-        led: PC13<Output<PushPull>>,
-    }
-    
-    #[init]
-    fn init(ctx: init::Context) -> (Shared, Local) {
-        let dp = ctx.device;
-        let gpioc = dp.GPIOC.split();
-        let led = gpioc.pc13.into_push_pull_output();
-        
-        (
-            Shared { counter: 0 },
-            Local { led },
-        )
-    }
-    
-    #[task(binds = EXTI0, shared = [counter], local = [led])]
-    fn button_pressed(mut ctx: button_pressed::Context) {
-        ctx.shared.counter.lock(|c| *c += 1);
-        ctx.local.led.toggle();
-    }
+ use stm32f4xx_hal::gpio::{Output, PC13, PushPull};
+ 
+ #[shared]
+ struct Shared {
+ counter: u32,
+ }
+ 
+ #[local]
+ struct Local {
+ led: PC13<Output<PushPull>>,
+ }
+ 
+ #[init]
+ fn init(ctx: init::Context) -> (Shared, Local) {
+ let dp = ctx.device;
+ let gpioc = dp.GPIOC.split();
+ let led = gpioc.pc13.into_push_pull_output();
+ 
+ (
+ Shared { counter: 0 },
+ Local { led },
+ )
+ }
+ 
+ #[task(binds = EXTI0, shared = [counter], local = [led])]
+ fn button_pressed(mut ctx: button_pressed::Context) {
+ ctx.shared.counter.lock(|c| *c += 1);
+ ctx.local.led.toggle();
+ }
 }
 ```
 

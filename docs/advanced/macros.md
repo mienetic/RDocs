@@ -25,21 +25,21 @@ Macros คือ code ที่รันตอน compile เพื่อสร�
 ```rust
 // macro ง่ายที่สุด
 macro_rules! say_hello {
-    () => {
-        println!("Hello!");
-    };
+ () => {
+ println!("Hello!");
+ };
 }
 
 macro_rules! greet {
-    ($name:expr) => {
-        println!("Hello, {}!", $name);
-    };
+ ($name:expr) => {
+ println!("Hello, {}!", $name);
+ };
 }
 
 fn main() {
-    say_hello!();
-    greet!("Rust");
-    greet!("Ferris");
+ say_hello!();
+ greet!("Rust");
+ greet!("Ferris");
 }
 ```
 
@@ -52,25 +52,25 @@ fn main() {
 ```rust
 // macro กับหลาย patterns
 macro_rules! calculate {
-    // Pattern 1: ไม่มี arguments
-    () => {
-        0
-    };
-    // Pattern 2: ตัวเลขตัวเดียว
-    ($x:expr) => {
-        $x
-    };
-    // Pattern 3: สองตัว กับ operator
-    ($x:expr, $op:tt, $y:expr) => {
-        $x $op $y
-    };
+ // Pattern 1: ไม่มี arguments
+ () => {
+ 0
+ };
+ // Pattern 2: ตัวเลขตัวเดียว
+ ($x:expr) => {
+ $x
+ };
+ // Pattern 3: สองตัว กับ operator
+ ($x:expr, $op:tt, $y:expr) => {
+ $x $op $y
+ };
 }
 
 fn main() {
-    println!("Empty: {}", calculate!());
-    println!("Single: {}", calculate!(42));
-    println!("Add: {}", calculate!(10, +, 20));
-    println!("Mul: {}", calculate!(5, *, 6));
+ println!("Empty: {}", calculate!());
+ println!("Single: {}", calculate!(42));
+ println!("Add: {}", calculate!(10, +, 20));
+ println!("Mul: {}", calculate!(5, *, 6));
 }
 ```
 
@@ -83,33 +83,33 @@ fn main() {
 ```rust
 // macro ที่รับ arguments ไม่จำกัดจำนวน
 macro_rules! vec_of_strings {
-    // $($x:expr),* = 0 หรือมากกว่า expressions คั่นด้วย ,
-    ($($x:expr),*) => {
-        vec![$(String::from($x)),*]
-    };
+ // $($x:expr),* = 0 หรือมากกว่า expressions คั่นด้วย ,
+ ($($x:expr),*) => {
+ vec![$(String::from($x)),*]
+ };
 }
 
 macro_rules! create_functions {
-    // สร้างหลาย functions
-    ($($name:ident),*) => {
-        $(
-            fn $name() {
-                println!("Function: {:?}", stringify!($name));
-            }
-        )*
-    };
+ // สร้างหลาย functions
+ ($($name:ident),*) => {
+ $(
+ fn $name() {
+ println!("Function: {:?}", stringify!($name));
+ }
+ )*
+ };
 }
 
 // สร้าง functions: foo, bar, baz
 create_functions!(foo, bar, baz);
 
 fn main() {
-    let names = vec_of_strings!["Alice", "Bob", "Charlie"];
-    println!("{:?}", names);
-    
-    foo();
-    bar();
-    baz();
+ let names = vec_of_strings!["Alice", "Bob", "Charlie"];
+ println!("{:?}", names);
+ 
+ foo();
+ bar();
+ baz();
 }
 ```
 
@@ -135,17 +135,17 @@ fn main() {
 ```rust
 // ใช้ designators ต่างๆ
 macro_rules! make_function {
-    ($name:ident, $return_type:ty, $body:block) => {
-        fn $name() -> $return_type $body
-    };
+ ($name:ident, $return_type:ty, $body:block) => {
+ fn $name() -> $return_type $body
+ };
 }
 
 make_function!(get_number, i32, { 42 });
 make_function!(get_text, &'static str, { "hello" });
 
 fn main() {
-    println!("Number: {}", get_number());
-    println!("Text: {}", get_text());
+ println!("Number: {}", get_number());
+ println!("Text: {}", get_text());
 }
 ```
 
@@ -173,18 +173,18 @@ use syn::{parse_macro_input, DeriveInput};
 
 #[proc_macro_derive(HelloMacro)]
 pub fn hello_macro_derive(input: TokenStream) -> TokenStream {
-    let ast = parse_macro_input!(input as DeriveInput);
-    let name = &ast.ident;
-    
-    let gen = quote! {
-        impl HelloMacro for #name {
-            fn hello_macro() {
-                println!("Hello from {}!", stringify!(#name));
-            }
-        }
-    };
-    
-    gen.into()
+ let ast = parse_macro_input!(input as DeriveInput);
+ let name = &ast.ident;
+ 
+ let gen = quote! {
+ impl HelloMacro for #name {
+ fn hello_macro() {
+ println!("Hello from {}!", stringify!(#name));
+ }
+ }
+ };
+ 
+ gen.into()
 }
 ```
 
@@ -193,15 +193,15 @@ pub fn hello_macro_derive(input: TokenStream) -> TokenStream {
 use my_derive::HelloMacro;
 
 trait HelloMacro {
-    fn hello_macro();
+ fn hello_macro();
 }
 
 #[derive(HelloMacro)]
 struct Pancakes;
 
 fn main() {
-    Pancakes::hello_macro();
-    // Output: Hello from Pancakes!
+ Pancakes::hello_macro();
+ // Output: Hello from Pancakes!
 }
 ```
 
@@ -211,15 +211,15 @@ fn main() {
 // สร้าง attribute macro
 #[proc_macro_attribute]
 pub fn route(attr: TokenStream, item: TokenStream) -> TokenStream {
-    // attr = "GET", "/hello"
-    // item = fn handler() { ... }
-    // ...
+ // attr = "GET", "/hello"
+ // item = fn handler() { ... }
+ // ...
 }
 
 // ใช้งาน
 #[route(GET, "/hello")]
 fn handler() {
-    // handle request
+ // handle request
 }
 ```
 
@@ -229,8 +229,8 @@ fn handler() {
 // สร้าง function-like macro
 #[proc_macro]
 pub fn sql(input: TokenStream) -> TokenStream {
-    // parse SQL at compile time
-    // ...
+ // parse SQL at compile time
+ // ...
 }
 
 // ใช้งาน
@@ -243,32 +243,32 @@ let query = sql!(SELECT * FROM users WHERE id = 1);
 
 ```rust
 fn main() {
-    // println! - print กับ format
-    println!("Hello, {}!", "world");
-    
-    // vec! - สร้าง Vec
-    let v = vec![1, 2, 3];
-    println!("vec: {:?}", v);
-    
-    // format! - สร้าง String
-    let s = format!("{} + {} = {}", 1, 2, 3);
-    println!("{}", s);
-    
-    // panic! - crash พร้อม message
-    // panic!("Something went wrong!");
-    
-    // assert! - ตรวจสอบ condition
-    assert!(1 + 1 == 2);
-    
-    // dbg! - debug print
-    let x = dbg!(3 * 3);  // prints: [src/main.rs:X] 3 * 3 = 9
-    println!("x = {}", x);
-    
-    // todo! - placeholder ที่ยังไม่ implement
-    // todo!("Implement this later");
-    
-    // unimplemented! - code ที่ไม่ควรถูกเรียก
-    // unimplemented!();
+ // println! - print กับ format
+ println!("Hello, {}!", "world");
+ 
+ // vec! - สร้าง Vec
+ let v = vec![1, 2, 3];
+ println!("vec: {:?}", v);
+ 
+ // format! - สร้าง String
+ let s = format!("{} + {} = {}", 1, 2, 3);
+ println!("{}", s);
+ 
+ // panic! - crash พร้อม message
+ // panic!("Something went wrong!");
+ 
+ // assert! - ตรวจสอบ condition
+ assert!(1 + 1 == 2);
+ 
+ // dbg! - debug print
+ let x = dbg!(3 * 3); // prints: [src/main.rs:X] 3 * 3 = 9
+ println!("x = {}", x);
+ 
+ // todo! - placeholder ที่ยังไม่ implement
+ // todo!("Implement this later");
+ 
+ // unimplemented! - code ที่ไม่ควรถูกเรียก
+ // unimplemented!();
 }
 ```
 
@@ -280,25 +280,25 @@ fn main() {
 
 ```rust
 macro_rules! debug_print {
-    ($val:expr) => {
-        println!("[DEBUG] {} = {:?}", stringify!($val), $val);
-    };
-    // หลายค่า
-    ($($val:expr),+ $(,)?) => {
-        $(
-            debug_print!($val);
-        )+
-    };
+ ($val:expr) => {
+ println!("[DEBUG] {} = {:?}", stringify!($val), $val);
+ };
+ // หลายค่า
+ ($($val:expr),+ $(,)?) => {
+ $(
+ debug_print!($val);
+ )+
+ };
 }
 
 fn main() {
-    let x = 42;
-    let name = "Rust";
-    let numbers = vec![1, 2, 3];
-    
-    debug_print!(x);
-    debug_print!(name, numbers);
-    debug_print!(x + 10, name.len());
+ let x = 42;
+ let name = "Rust";
+ let numbers = vec![1, 2, 3];
+ 
+ debug_print!(x);
+ debug_print!(name, numbers);
+ debug_print!(x + 10, name.len());
 }
 ```
 
@@ -310,9 +310,9 @@ fn main() {
 // ทำให้ macro ใช้ได้จาก crate อื่น
 #[macro_export]
 macro_rules! public_macro {
-    () => {
-        println!("I'm exported!");
-    };
+ () => {
+ println!("I'm exported!");
+ };
 }
 
 // ใช้จาก crate อื่น
@@ -332,6 +332,12 @@ macro_rules! public_macro {
 - Code ยากอ่านเกินไป
 - Debug ยาก
 
+::: pitfall
+**Macro Debugging เป็นฝันร้าย**
+Compiler error message จาก Macro มักจะชี้ไปที่บรรทัดที่เรียกใช้ Macro ไม่ใช่ข้างใน Macro
+**คำแนะนำ:** เขียน logic ให้เป็น Function ปกติให้มากที่สุด แล้วใช้ Macro แค่เป็น Wrapper เรียก Function นั้น
+:::
+
 ## Macro Debugging
 
 ```bash
@@ -340,10 +346,10 @@ cargo expand
 
 # หรือใช้ println! กับ stringify!
 macro_rules! debug_macro {
-    ($x:expr) => {
-        println!("Code: {}", stringify!($x));
-        $x
-    };
+ ($x:expr) => {
+ println!("Code: {}", stringify!($x));
+ $x
+ };
 }
 ```
 

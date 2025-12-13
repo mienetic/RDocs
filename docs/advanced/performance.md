@@ -1,6 +1,6 @@
 # Performance & Profiling
 
-ทำให้ Rust code เร็วขึ้น! ⚡
+ทำให้ Rust code เร็วขึ้น! 
 
 :::tip Rust = เร็วอยู่แล้ว แต่ยังเร็วกว่าได้อีก!
 เรียนรู้วิธี benchmark, profile, และ optimize Rust code!
@@ -27,17 +27,17 @@ harness = false
 use criterion::{black_box, criterion_group, criterion_main, Criterion};
 
 fn fibonacci(n: u64) -> u64 {
-    match n {
-        0 => 1,
-        1 => 1,
-        n => fibonacci(n - 1) + fibonacci(n - 2),
-    }
+ match n {
+ 0 => 1,
+ 1 => 1,
+ n => fibonacci(n - 1) + fibonacci(n - 2),
+ }
 }
 
 fn criterion_benchmark(c: &mut Criterion) {
-    c.bench_function("fib 20", |b| {
-        b.iter(|| fibonacci(black_box(20)))
-    });
+ c.bench_function("fib 20", |b| {
+ b.iter(|| fibonacci(black_box(20)))
+ });
 }
 
 criterion_group!(benches, criterion_benchmark);
@@ -54,23 +54,23 @@ cargo bench
 use criterion::{criterion_group, criterion_main, BenchmarkId, Criterion};
 
 fn bench_fibonacci(c: &mut Criterion) {
-    let mut group = c.benchmark_group("Fibonacci");
-    
-    for n in [10, 20, 30].iter() {
-        group.bench_with_input(
-            BenchmarkId::new("Recursive", n),
-            n,
-            |b, n| b.iter(|| fibonacci_recursive(*n)),
-        );
-        
-        group.bench_with_input(
-            BenchmarkId::new("Iterative", n),
-            n,
-            |b, n| b.iter(|| fibonacci_iterative(*n)),
-        );
-    }
-    
-    group.finish();
+ let mut group = c.benchmark_group("Fibonacci");
+ 
+ for n in [10, 20, 30].iter() {
+ group.bench_with_input(
+ BenchmarkId::new("Recursive", n),
+ n,
+ |b, n| b.iter(|| fibonacci_recursive(*n)),
+ );
+ 
+ group.bench_with_input(
+ BenchmarkId::new("Iterative", n),
+ n,
+ |b, n| b.iter(|| fibonacci_iterative(*n)),
+ );
+ }
+ 
+ group.finish();
 }
 ```
 
@@ -111,6 +111,12 @@ cargo build --release
 instruments -t "Time Profiler" ./target/release/myapp
 ```
 
+::: best-practice
+**Benchmark ด้วย `--release` เสมอ**
+อย่าลืม flag `--release` เวลาวัด Performance!
+Debug build (default) ช้ากว่า Release build **10-100 เท่า** เพราะไม่มีการ Optimize และมี Debug checks เต็มไปหมด
+:::
+
 ---
 
 ## 3. Compiler Optimizations
@@ -120,11 +126,11 @@ instruments -t "Time Profiler" ./target/release/myapp
 ```toml
 # Cargo.toml
 [profile.release]
-opt-level = 3          # Optimization level (0-3, s, z)
-lto = true             # Link-time optimization
-codegen-units = 1      # Single codegen unit
-panic = "abort"        # Abort on panic (smaller binary)
-strip = true           # Strip symbols
+opt-level = 3 # Optimization level (0-3, s, z)
+lto = true # Link-time optimization
+codegen-units = 1 # Single codegen unit
+panic = "abort" # Abort on panic (smaller binary)
+strip = true # Strip symbols
 ```
 
 ### 3.2 Profile Options
@@ -147,22 +153,27 @@ strip = true           # Strip symbols
 
 ```rust
 fn main() {
-    // ❌ Slow: allocates new String
-    let strings: Vec<String> = (0..1000)
-        .map(|i| format!("item_{}", i))
-        .collect();
-    
-    // ✅ Faster: pre-allocate capacity
-    let mut strings = Vec::with_capacity(1000);
-    for i in 0..1000 {
-        strings.push(format!("item_{}", i));
-    }
-    
-    println!("Created {} strings", strings.len());
+ // Slow: allocates new String
+ let strings: Vec<String> = (0..1000)
+ .map(|i| format!("item_{}", i))
+ .collect();
+ 
+ // Faster: pre-allocate capacity
+ let mut strings = Vec::with_capacity(1000);
+ for i in 0..1000 {
+ strings.push(format!("item_{}", i));
+ }
+ 
+ println!("Created {} strings", strings.len());
 }
 ```
 
 </RustPlayground>
+
+::: recommendation
+**ใช้ `Vec::with_capacity` เสมอถ้าทำได้**
+ถ้าเรารู้จำนวนคร่าวๆ ว่าจะมีกี่ Items การจองที่ไว้ก่อน (Pre-allocation) ช่วยลดการ Re-allocate memory ได้มหาศาล และทำให้ Code เร็วขึ้นอย่างเห็นได้ชัด
+:::
 
 ### 4.2 Use Iterators
 
@@ -170,16 +181,16 @@ fn main() {
 
 ```rust
 fn main() {
-    let numbers: Vec<i32> = (0..1000).collect();
-    
-    // ❌ Slow: creates intermediate Vec
-    // let doubled: Vec<_> = numbers.iter().map(|x| x * 2).collect();
-    // let sum: i32 = doubled.iter().sum();
-    
-    // ✅ Fast: lazy evaluation, no intermediate Vec
-    let sum: i32 = numbers.iter().map(|x| x * 2).sum();
-    
-    println!("Sum: {}", sum);
+ let numbers: Vec<i32> = (0..1000).collect();
+ 
+ // Slow: creates intermediate Vec
+ // let doubled: Vec<_> = numbers.iter().map(|x| x * 2).collect();
+ // let sum: i32 = doubled.iter().sum();
+ 
+ // Fast: lazy evaluation, no intermediate Vec
+ let sum: i32 = numbers.iter().map(|x| x * 2).sum();
+ 
+ println!("Sum: {}", sum);
 }
 ```
 
@@ -191,24 +202,24 @@ fn main() {
 
 ```rust
 fn main() {
-    // ❌ Slow: many allocations
-    let mut s = String::new();
-    for i in 0..100 {
-        s = s + &i.to_string() + ", ";
-    }
-    
-    // ✅ Fast: single allocation
-    let parts: Vec<String> = (0..100).map(|i| i.to_string()).collect();
-    let s = parts.join(", ");
-    
-    // ✅ Even faster with capacity
-    let mut s = String::with_capacity(400);
-    for i in 0..100 {
-        s.push_str(&i.to_string());
-        s.push_str(", ");
-    }
-    
-    println!("Length: {}", s.len());
+ // Slow: many allocations
+ let mut s = String::new();
+ for i in 0..100 {
+ s = s + &i.to_string() + ", ";
+ }
+ 
+ // Fast: single allocation
+ let parts: Vec<String> = (0..100).map(|i| i.to_string()).collect();
+ let s = parts.join(", ");
+ 
+ // Even faster with capacity
+ let mut s = String::with_capacity(400);
+ for i in 0..100 {
+ s.push_str(&i.to_string());
+ s.push_str(", ");
+ }
+ 
+ println!("Length: {}", s.len());
 }
 ```
 
@@ -220,20 +231,20 @@ fn main() {
 
 ```rust
 fn process(data: &str) {
-    println!("Processing: {}", data);
+ println!("Processing: {}", data);
 }
 
 fn main() {
-    let data = String::from("hello");
-    
-    // ❌ Unnecessary clone
-    // process(&data.clone());
-    
-    // ✅ Just borrow
-    process(&data);
-    
-    // data is still valid here
-    println!("Data: {}", data);
+ let data = String::from("hello");
+ 
+ // Unnecessary clone
+ // process(&data.clone());
+ 
+ // Just borrow
+ process(&data);
+ 
+ // data is still valid here
+ println!("Data: {}", data);
 }
 ```
 
@@ -250,9 +261,9 @@ fn main() {
 use std::simd::f32x4;
 
 fn add_arrays(a: &[f32; 4], b: &[f32; 4]) -> [f32; 4] {
-    let va = f32x4::from_array(*a);
-    let vb = f32x4::from_array(*b);
-    (va + vb).to_array()
+ let va = f32x4::from_array(*a);
+ let vb = f32x4::from_array(*b);
+ (va + vb).to_array()
 }
 ```
 
@@ -267,14 +278,14 @@ packed_simd = "0.3"
 use packed_simd::f32x4;
 
 fn dot_product(a: &[f32], b: &[f32]) -> f32 {
-    a.chunks_exact(4)
-        .zip(b.chunks_exact(4))
-        .map(|(a, b)| {
-            let va = f32x4::from_slice_unaligned(a);
-            let vb = f32x4::from_slice_unaligned(b);
-            (va * vb).sum()
-        })
-        .sum()
+ a.chunks_exact(4)
+ .zip(b.chunks_exact(4))
+ .map(|(a, b)| {
+ let va = f32x4::from_slice_unaligned(a);
+ let vb = f32x4::from_slice_unaligned(b);
+ (va * vb).sum()
+ })
+ .sum()
 }
 ```
 
@@ -293,15 +304,15 @@ rayon = "1.8"
 use rayon::prelude::*;
 
 fn main() {
-    let numbers: Vec<i32> = (0..1_000_000).collect();
-    
-    // Sequential
-    let sum1: i32 = numbers.iter().map(|x| x * 2).sum();
-    
-    // Parallel - just change iter() to par_iter()!
-    let sum2: i32 = numbers.par_iter().map(|x| x * 2).sum();
-    
-    assert_eq!(sum1, sum2);
+ let numbers: Vec<i32> = (0..1_000_000).collect();
+ 
+ // Sequential
+ let sum1: i32 = numbers.iter().map(|x| x * 2).sum();
+ 
+ // Parallel - just change iter() to par_iter()!
+ let sum2: i32 = numbers.par_iter().map(|x| x * 2).sum();
+ 
+ assert_eq!(sum1, sum2);
 }
 ```
 
@@ -311,12 +322,12 @@ fn main() {
 use rayon::prelude::*;
 
 fn main() {
-    let mut data: Vec<i32> = (0..1_000_000).rev().collect();
-    
-    // Parallel sort
-    data.par_sort();
-    
-    println!("Sorted {} items", data.len());
+ let mut data: Vec<i32> = (0..1_000_000).rev().collect();
+ 
+ // Parallel sort
+ data.par_sort();
+ 
+ println!("Sorted {} items", data.len());
 }
 ```
 
@@ -327,21 +338,21 @@ fn main() {
 ### 7.1 Cache-Friendly Data
 
 ```rust
-// ❌ Cold data mixed with hot data
+// Cold data mixed with hot data
 struct BadLayout {
-    hot_field1: u32,
-    cold_data: [u8; 1024],
-    hot_field2: u32,
+ hot_field1: u32,
+ cold_data: [u8; 1024],
+ hot_field2: u32,
 }
 
-// ✅ Separate hot and cold data
+// Separate hot and cold data
 struct GoodLayout {
-    hot_field1: u32,
-    hot_field2: u32,
+ hot_field1: u32,
+ hot_field2: u32,
 }
 
 struct ColdData {
-    data: [u8; 1024],
+ data: [u8; 1024],
 }
 ```
 
@@ -354,9 +365,9 @@ let points: Vec<Point> = vec![];
 
 // Struct of Arrays (SoA) - better for SIMD
 struct Points {
-    x: Vec<f32>,
-    y: Vec<f32>,
-    z: Vec<f32>,
+ x: Vec<f32>,
+ y: Vec<f32>,
+ z: Vec<f32>,
 }
 ```
 
@@ -380,14 +391,14 @@ struct Points {
 
 | Item | Check |
 |------|-------|
-| Use `--release` | ⬜ |
-| Enable LTO | ⬜ |
-| Pre-allocate vectors | ⬜ |
-| Avoid unnecessary clones | ⬜ |
-| Use iterators | ⬜ |
-| Parallelize with rayon | ⬜ |
-| Profile before optimizing | ⬜ |
-| Benchmark changes | ⬜ |
+| Use `--release` | |
+| Enable LTO | |
+| Pre-allocate vectors | |
+| Avoid unnecessary clones | |
+| Use iterators | |
+| Parallelize with rayon | |
+| Profile before optimizing | |
+| Benchmark changes | |
 
 ---
 

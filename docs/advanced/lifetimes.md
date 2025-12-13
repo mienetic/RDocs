@@ -3,14 +3,14 @@
 Lifetimes คือวิธีที่ Rust ใช้ติดตามว่า reference จะใช้งานได้นานเท่าไหร่
 
 :::tip เปรียบเทียบกับชีวิตจริง
-ลองนึกถึง **บัตรห้องสมุด** 📚:
+ลองนึกถึง **บัตรห้องสมุด** :
 - ยืมหนังสือได้ = ได้ reference ไปใช้
 - มีวันคืน = lifetime (ต้องคืนก่อนหมดเขต)
 - ถ้าหนังสือถูกนำออก = dangling reference (ชี้ไปที่ไม่มีหนังสืออยู่)
 
 **Rust ตรวจสอบ:** "reference นี้จะยังใช้ได้อยู่ไหม ตอนที่เราจะใช้มัน?"
-- ถ้าใช้ได้ ✅ = compile สำเร็จ
-- ถ้าไม่ได้ ❌ = compile error (ช่วยเราก่อน runtime!)
+- ถ้าใช้ได้ = compile สำเร็จ
+- ถ้าไม่ได้ = compile error (ช่วยเราก่อน runtime!)
 :::
 
 ## ทำไมต้องมี Lifetimes?
@@ -21,18 +21,18 @@ Lifetimes คือวิธีที่ Rust ใช้ติดตามว่�
 
 ```rust
 fn main() {
-    // ตัวอย่างที่ทำให้เกิด dangling reference (แบบนี้ Rust ไม่อนุญาต!)
-    // let r;
-    // {
-    //     let x = 5;
-    //     r = &x;  // x จะหมด scope ก่อน r
-    // }
-    // println!("{}", r);  // ERROR: x ไม่มีอยู่แล้ว!
-    
-    // แบบที่ถูกต้อง
-    let x = 5;
-    let r = &x;
-    println!("r = {}", r);  // OK: x ยังอยู่
+ // ตัวอย่างที่ทำให้เกิด dangling reference (แบบนี้ Rust ไม่อนุญาต!)
+ // let r;
+ // {
+ // let x = 5;
+ // r = &x; // x จะหมด scope ก่อน r
+ // }
+ // println!("{}", r); // ERROR: x ไม่มีอยู่แล้ว!
+ 
+ // แบบที่ถูกต้อง
+ let x = 5;
+ let r = &x;
+ println!("r = {}", r); // OK: x ยังอยู่
 }
 ```
 
@@ -49,19 +49,19 @@ Lifetime ใช้ `'` (apostrophe) ตามด้วยชื่อ (มัก
 // 'a บอกว่า: return reference จะมีชีวิตอยู่ได้ไม่นานกว่า
 // reference ที่ pass เข้ามา
 fn longest<'a>(x: &'a str, y: &'a str) -> &'a str {
-    if x.len() > y.len() {
-        x
-    } else {
-        y
-    }
+ if x.len() > y.len() {
+ x
+ } else {
+ y
+ }
 }
 
 fn main() {
-    let string1 = String::from("long string is long");
-    let string2 = String::from("xyz");
-    
-    let result = longest(&string1, &string2);
-    println!("Longest: {}", result);
+ let string1 = String::from("long string is long");
+ let string2 = String::from("xyz");
+ 
+ let result = longest(&string1, &string2);
+ println!("Longest: {}", result);
 }
 ```
 
@@ -76,19 +76,19 @@ fn main() {
 ```rust
 // ไม่ต้องมี lifetime: return reference จาก parameter ตัวเดียว
 fn first_word(s: &str) -> &str {
-    let bytes = s.as_bytes();
-    for (i, &byte) in bytes.iter().enumerate() {
-        if byte == b' ' {
-            return &s[0..i];
-        }
-    }
-    &s[..]
+ let bytes = s.as_bytes();
+ for (i, &byte) in bytes.iter().enumerate() {
+ if byte == b' ' {
+ return &s[0..i];
+ }
+ }
+ &s[..]
 }
 
 fn main() {
-    let sentence = "Hello world";
-    let word = first_word(sentence);
-    println!("First word: {}", word);
+ let sentence = "Hello world";
+ let word = first_word(sentence);
+ println!("First word: {}", word);
 }
 ```
 
@@ -99,18 +99,18 @@ fn main() {
 ```rust
 // ต้องมี lifetime: return อาจมาจาก parameter ตัวไหนก็ได้
 fn longest<'a>(x: &'a str, y: &'a str) -> &'a str {
-    if x.len() > y.len() { x } else { y }
+ if x.len() > y.len() { x } else { y }
 }
 
 // ERROR: ไม่รู้ว่า return มาจากไหน
 // fn invalid_longest(x: &str, y: &str) -> &str {
-//     if x.len() > y.len() { x } else { y }
+// if x.len() > y.len() { x } else { y }
 // }
 
 fn main() {
-    let a = "hello";
-    let b = "hi";
-    println!("Longest: {}", longest(a, b));
+ let a = "hello";
+ let b = "hi";
+ println!("Longest: {}", longest(a, b));
 }
 ```
 
@@ -148,11 +148,11 @@ fn foo<'a>(x: &'a str) -> &'a str
 ```rust
 // เขียน:
 impl Foo {
-    fn bar(&self, x: &str) -> &str
+ fn bar(&self, x: &str) -> &str
 }
 // Compiler เข้าใจเป็น:
 impl Foo {
-    fn bar<'a, 'b>(&'a self, x: &'b str) -> &'a str
+ fn bar<'a, 'b>(&'a self, x: &'b str) -> &'a str
 }
 ```
 
@@ -165,33 +165,39 @@ impl Foo {
 ```rust
 // 'a บอกว่า ImportantExcerpt มีชีวิตอยู่ได้ไม่นานกว่า part
 struct ImportantExcerpt<'a> {
-    part: &'a str,
+ part: &'a str,
 }
 
 impl<'a> ImportantExcerpt<'a> {
-    // กฎ 3: return ใช้ lifetime ของ self
-    fn announce_and_return_part(&self, announcement: &str) -> &str {
-        println!("Attention: {}", announcement);
-        self.part
-    }
+ // กฎ 3: return ใช้ lifetime ของ self
+ fn announce_and_return_part(&self, announcement: &str) -> &str {
+ println!("Attention: {}", announcement);
+ self.part
+ }
 }
 
 fn main() {
-    let novel = String::from("Call me Ishmael. Some years ago...");
-    let first_sentence = novel.split('.').next().unwrap();
-    
-    let excerpt = ImportantExcerpt {
-        part: first_sentence,
-    };
-    
-    println!("Excerpt: {}", excerpt.part);
-    
-    let result = excerpt.announce_and_return_part("Hello!");
-    println!("Result: {}", result);
+ let novel = String::from("Call me Ishmael. Some years ago...");
+ let first_sentence = novel.split('.').next().unwrap();
+ 
+ let excerpt = ImportantExcerpt {
+ part: first_sentence,
+ };
+ 
+ println!("Excerpt: {}", excerpt.part);
+ 
+ let result = excerpt.announce_and_return_part("Hello!");
+ println!("Result: {}", result);
 }
 ```
 
 </RustPlayground>
+
+::: best-practice
+**เลี่ยง Reference ใน Struct ถ้าไม่จำเป็น**
+การเก็บ Reference (`&'a T`) ใน Struct จะทำให้โค้ดซับซ้อนขึ้นมหาศาล (ติดเชื้อ Lifetime ไปทุกที่)
+ถ้าเป็นไปได้ ให้เก็บแบบ **Owned (`T`)** ไปเลย ชีวิตจะง่ายขึ้นเยอะ!
+:::
 
 ## Static Lifetime
 
@@ -201,15 +207,15 @@ fn main() {
 
 ```rust
 fn main() {
-    // String literals มี 'static lifetime
-    let s: &'static str = "I have a static lifetime.";
-    
-    // เพราะ string literals ถูกเก็บใน binary โดยตรง
-    println!("{}", s);
-    
-    // Constants ก็มี 'static lifetime
-    const MESSAGE: &str = "Hello, World!";
-    println!("{}", MESSAGE);
+ // String literals มี 'static lifetime
+ let s: &'static str = "I have a static lifetime.";
+ 
+ // เพราะ string literals ถูกเก็บใน binary โดยตรง
+ println!("{}", s);
+ 
+ // Constants ก็มี 'static lifetime
+ const MESSAGE: &str = "Hello, World!";
+ println!("{}", MESSAGE);
 }
 ```
 
@@ -227,23 +233,23 @@ fn main() {
 ```rust
 // lifetime หลายตัว: คนละ scope
 fn complex<'a, 'b>(x: &'a str, y: &'b str) -> &'a str {
-    // return ต้องมี lifetime 'a เท่านั้น
-    println!("y = {}", y);
-    x
+ // return ต้องมี lifetime 'a เท่านั้น
+ println!("y = {}", y);
+ x
 }
 
 fn main() {
-    let x = String::from("hello");
-    let result;
-    
-    {
-        let y = String::from("world");
-        result = complex(&x, &y);
-        // y ออกจาก scope ที่นี่ แต่ result ยังใช้ได้
-        // เพราะ result มี lifetime 'a ซึ่งผูกกับ x
-    }
-    
-    println!("result = {}", result);
+ let x = String::from("hello");
+ let result;
+ 
+ {
+ let y = String::from("world");
+ result = complex(&x, &y);
+ // y ออกจาก scope ที่นี่ แต่ result ยังใช้ได้
+ // เพราะ result มี lifetime 'a ซึ่งผูกกับ x
+ }
+ 
+ println!("result = {}", result);
 }
 ```
 
@@ -266,31 +272,31 @@ fn main() {
 ```rust
 // Pattern 1: Return reference from single input
 fn first_char(s: &str) -> Option<char> {
-    s.chars().next()
+ s.chars().next()
 }
 
 // Pattern 2: Return reference from one of multiple inputs
 fn choose_first<'a>(a: &'a str, _b: &str) -> &'a str {
-    a
+ a
 }
 
 // Pattern 3: Method returning reference to self
 struct Container {
-    data: String,
+ data: String,
 }
 
 impl Container {
-    fn get_data(&self) -> &str {
-        &self.data
-    }
+ fn get_data(&self) -> &str {
+ &self.data
+ }
 }
 
 fn main() {
-    println!("First char: {:?}", first_char("hello"));
-    println!("Choose: {}", choose_first("first", "second"));
-    
-    let c = Container { data: String::from("content") };
-    println!("Data: {}", c.get_data());
+ println!("First char: {:?}", first_char("hello"));
+ println!("Choose: {}", choose_first("first", "second"));
+ 
+ let c = Container { data: String::from("content") };
+ println!("Data: {}", c.get_data());
 }
 ```
 

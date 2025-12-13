@@ -1,6 +1,6 @@
 # Comments & Documentation
 
-เขียน comments และ documentation อย่างมืออาชีพ! 📝
+เขียน comments และ documentation อย่างมืออาชีพ! 
 
 :::tip Documentation is First-Class in Rust!
 Rust มีระบบ documentation ที่ดีมาก - `rustdoc` สร้าง documentation สวยๆ จาก comments อัตโนมัติ!
@@ -16,14 +16,14 @@ Rust มีระบบ documentation ที่ดีมาก - `rustdoc` ส�
 
 ```rust
 fn main() {
-    // นี่คือ line comment
-    let x = 5; // comment ท้ายบรรทัดก็ได้
-    
-    // หลายบรรทัด
-    // ก็ใช้ // ซ้ำได้
-    let y = 10;
-    
-    println!("x = {}, y = {}", x, y);
+ // นี่คือ line comment
+ let x = 5; // comment ท้ายบรรทัดก็ได้
+ 
+ // หลายบรรทัด
+ // ก็ใช้ // ซ้ำได้
+ let y = 10;
+ 
+ println!("x = {}, y = {}", x, y);
 }
 ```
 
@@ -35,18 +35,18 @@ fn main() {
 
 ```rust
 fn main() {
-    /* นี่คือ block comment
-       สามารถเขียนได้หลายบรรทัด
-       โดยไม่ต้อง // ทุกบรรทัด */
-    
-    let x = /* comment ตรงกลางก็ได้ */ 42;
-    
-    /* 
-     * แบบมีดาวสวยๆ
-     * ก็นิยมใช้กัน
-     */
-    
-    println!("x = {}", x);
+ /* นี่คือ block comment
+ สามารถเขียนได้หลายบรรทัด
+ โดยไม่ต้อง // ทุกบรรทัด */
+ 
+ let x = /* comment ตรงกลางก็ได้ */ 42;
+ 
+ /* 
+ * แบบมีดาวสวยๆ
+ * ก็นิยมใช้กัน
+ */
+ 
+ println!("x = {}", x);
 }
 ```
 
@@ -79,12 +79,12 @@ fn main() {
 /// assert_eq!(area, 50);
 /// ```
 fn calculate_area(width: u32, height: u32) -> u32 {
-    width * height
+ width * height
 }
 
 fn main() {
-    let area = calculate_area(5, 10);
-    println!("Area: {}", area);
+ let area = calculate_area(5, 10);
+ println!("Area: {}", area);
 }
 ```
 
@@ -111,7 +111,7 @@ fn main() {
 
 /// Function documentation here
 pub fn do_something() {
-    // ...
+ // ...
 }
 ```
 
@@ -155,7 +155,7 @@ pub fn do_something() {
 /// let result = my_function("Alice", 30);
 /// ```
 pub fn my_function(name: &str, age: u32) -> String {
-    format!("{} is {} years old", name, age)
+ format!("{} is {} years old", name, age)
 }
 ```
 
@@ -194,11 +194,11 @@ pub fn my_function(name: &str, age: u32) -> String {
 /// assert_eq!(y, 0);
 /// ```
 fn add_one(x: i32) -> i32 {
-    x + 1
+ x + 1
 }
 
 fn main() {
-    println!("5 + 1 = {}", add_one(5));
+ println!("5 + 1 = {}", add_one(5));
 }
 ```
 
@@ -274,11 +274,11 @@ Documentation จะอยู่ใน `target/doc/`
 /// 
 /// | Column 1 | Column 2 |
 /// |----------|----------|
-/// | Cell 1   | Cell 2   |
+/// | Cell 1 | Cell 2 |
 fn example() {}
 
 fn main() {
-    println!("Check the docs!");
+ println!("Check the docs!");
 }
 ```
 
@@ -288,7 +288,7 @@ fn main() {
 
 ## 7. Best Practices
 
-### 7.1 Do's ✅
+### 7.1 Do's 
 
 ```rust
 /// สั้น กระชับ ได้ใจความ (บรรทัดแรก)
@@ -303,17 +303,17 @@ fn main() {
 pub fn good_docs() {}
 ```
 
-### 7.2 Don'ts ❌
+### 7.2 Don'ts 
 
 ```rust
-// ❌ ไม่มี documentation
+// ไม่มี documentation
 pub fn no_docs() {}
 
-// ❌ Documentation ไม่มีประโยชน์
+// Documentation ไม่มีประโยชน์
 /// This function does something
 pub fn useless_docs() {}
 
-// ❌ ไม่มี Examples
+// ไม่มี Examples
 /// คำนวณค่าบางอย่าง
 pub fn no_examples() {}
 ```

@@ -10,14 +10,20 @@
 
 ```rust
 fn main() {
-    // ประกาศตัวแปรด้วย let
-    let x = 5;
-    println!("x = {}", x);
-    
-    // ❌ ERROR! ไม่สามารถเปลี่ยนค่าได้
-    // x = 6; // cannot assign twice to immutable variable
+ // ประกาศตัวแปรด้วย let
+ let x = 5;
+ println!("x = {}", x);
+ 
+ // ERROR! ไม่สามารถเปลี่ยนค่าได้
+ // x = 6; // cannot assign twice to immutable variable
 }
 ```
+
+::: best-practice
+**Naming Convention**
+Rust ใช้ `snake_case` สำหรับชื่อตัวแปรและฟังก์ชันเสมอ (ตัวพิมพ์เล็กคั่นด้วย `_`)
+เช่น `user_count`, `calculate_price`
+:::
 
 </RustPlayground>
 
@@ -27,17 +33,17 @@ fn main() {
 
 ```rust
 fn main() {
-    // mut = mutable (เปลี่ยนค่าได้)
-    let mut x = 5;
-    println!("x = {}", x);
-    
-    // ✅ OK! เพราะใช้ mut
-    x = 6;
-    println!("x = {}", x);
-    
-    // เพิ่มค่าก็ได้
-    x += 1;
-    println!("x = {}", x); // 7
+ // mut = mutable (เปลี่ยนค่าได้)
+ let mut x = 5;
+ println!("x = {}", x);
+ 
+ // OK! เพราะใช้ mut
+ x = 6;
+ println!("x = {}", x);
+ 
+ // เพิ่มค่าก็ได้
+ x += 1;
+ println!("x = {}", x); // 7
 }
 ```
 
@@ -88,16 +94,16 @@ let pi = 3.14159;
 
 ```rust
 fn main() {
-    let x = 5;
-    println!("x = {}", x);  // 5
-    
-    // Shadow ตัวแปร x ด้วยค่าใหม่
-    let x = x + 1;
-    println!("x = {}", x);  // 6
-    
-    // Shadow อีกครั้ง
-    let x = x * 2;
-    println!("x = {}", x);  // 12
+ let x = 5;
+ println!("x = {}", x); // 5
+ 
+ // Shadow ตัวแปร x ด้วยค่าใหม่
+ let x = x + 1;
+ println!("x = {}", x); // 6
+ 
+ // Shadow อีกครั้ง
+ let x = x * 2;
+ println!("x = {}", x); // 12
 }
 ```
 
@@ -109,14 +115,14 @@ fn main() {
 
 ```rust
 fn main() {
-    // Shadowing: เปลี่ยน type ได้!
-    let spaces = "   ";        // &str
-    let spaces = spaces.len(); // usize
-    println!("spaces = {}", spaces);
-    
-    // mut: เปลี่ยน type ไม่ได้!
-    // let mut spaces = "   ";
-    // spaces = spaces.len();  // ❌ ERROR: type mismatch
+ // Shadowing: เปลี่ยน type ได้!
+ let spaces = " "; // &str
+ let spaces = spaces.len(); // usize
+ println!("spaces = {}", spaces);
+ 
+ // mut: เปลี่ยน type ไม่ได้!
+ // let mut spaces = " ";
+ // spaces = spaces.len(); // ERROR: type mismatch
 }
 ```
 
@@ -126,9 +132,14 @@ fn main() {
 
 | | Shadowing | mut |
 |---|-----------|-----|
-| เปลี่ยน type ได้ | ✅ Yes | ❌ No |
-| สร้างตัวแปรใหม่ | ✅ Yes (let ใหม่) | ❌ No (ตัวเดิม) |
+| เปลี่ยน type ได้ | Yes | No |
+| สร้างตัวแปรใหม่ | Yes (let ใหม่) | No (ตัวเดิม) |
 | ใช้เมื่อ | Transform ข้อมูล | Update ค่า |
+
+::: recommendation
+**ใช้ Shadowing เพื่อแปลงข้อมูล**
+เช่นรับ `input` (String) มาแปลงเป็น `input` (i32) ได้เลย ไม่ต้องตั้งชื่อใหม่ว่า `input_str`, `input_int`
+:::
 
 ---
 
@@ -162,21 +173,21 @@ fn main() {
 
 ```rust
 fn main() {
-    let a: i32 = -42;     // Signed (มีลบได้)
-    let b: u32 = 42;      // Unsigned (บวกเท่านั้น)
-    let c: i64 = 1_000_000;  // _ ช่วยอ่านง่าย
-    
-    println!("a={}, b={}, c={}", a, b, c);
-    
-    // Literal formats
-    let decimal = 98_222;
-    let hex = 0xff;
-    let octal = 0o77;
-    let binary = 0b1111_0000;
-    let byte = b'A';  // u8 only
-    
-    println!("dec={}, hex={}, oct={}, bin={}, byte={}", 
-             decimal, hex, octal, binary, byte);
+ let a: i32 = -42; // Signed (มีลบได้)
+ let b: u32 = 42; // Unsigned (บวกเท่านั้น)
+ let c: i64 = 1_000_000; // _ ช่วยอ่านง่าย
+ 
+ println!("a={}, b={}, c={}", a, b, c);
+ 
+ // Literal formats
+ let decimal = 98_222;
+ let hex = 0xff;
+ let octal = 0o77;
+ let binary = 0b1111_0000;
+ let byte = b'A'; // u8 only
+ 
+ println!("dec={}, hex={}, oct={}, bin={}, byte={}", 
+ decimal, hex, octal, binary, byte);
 }
 ```
 
@@ -193,19 +204,19 @@ fn main() {
 
 ```rust
 fn main() {
-    let x = 2.0;        // f64 (default)
-    let y: f32 = 3.0;   // f32
-    
-    println!("x={}, y={}", x, y);
-    
-    // Operations
-    let sum = 5.0 + 10.0;
-    let difference = 95.5 - 4.3;
-    let product = 4.0 * 30.0;
-    let quotient = 56.7 / 32.2;
-    
-    println!("sum={}, diff={}, prod={}, quot={}", 
-             sum, difference, product, quotient);
+ let x = 2.0; // f64 (default)
+ let y: f32 = 3.0; // f32
+ 
+ println!("x={}, y={}", x, y);
+ 
+ // Operations
+ let sum = 5.0 + 10.0;
+ let difference = 95.5 - 4.3;
+ let product = 4.0 * 30.0;
+ let quotient = 56.7 / 32.2;
+ 
+ println!("sum={}, diff={}, prod={}, quot={}", 
+ sum, difference, product, quotient);
 }
 ```
 
@@ -217,15 +228,15 @@ fn main() {
 
 ```rust
 fn main() {
-    let t: bool = true;
-    let f: bool = false;
-    
-    println!("t={}, f={}", t, f);
-    
-    // Boolean operations
-    println!("AND: {}", t && f);
-    println!("OR: {}", t || f);
-    println!("NOT: {}", !t);
+ let t: bool = true;
+ let f: bool = false;
+ 
+ println!("t={}, f={}", t, f);
+ 
+ // Boolean operations
+ println!("AND: {}", t && f);
+ println!("OR: {}", t || f);
+ println!("NOT: {}", !t);
 }
 ```
 
@@ -239,17 +250,17 @@ Rust `char` คือ Unicode Scalar Value (4 bytes):
 
 ```rust
 fn main() {
-    let c = 'z';
-    let z: char = 'ℤ';
-    let heart = '❤';
-    let thai = 'ก';
-    let emoji = '😀';
-    
-    println!("c={}, z={}, heart={}, thai={}, emoji={}", 
-             c, z, heart, thai, emoji);
-    
-    // char size = 4 bytes (Unicode)
-    println!("char size: {} bytes", std::mem::size_of::<char>());
+ let c = 'z';
+ let z: char = 'ℤ';
+ let heart = '';
+ let thai = 'ก';
+ let emoji = '';
+ 
+ println!("c={}, z={}, heart={}, thai={}, emoji={}", 
+ c, z, heart, thai, emoji);
+ 
+ // char size = 4 bytes (Unicode)
+ println!("char size: {} bytes", std::mem::size_of::<char>());
 }
 ```
 
@@ -267,19 +278,19 @@ Tuple รวมค่าหลายตัวที่มี type ต่าง�
 
 ```rust
 fn main() {
-    // สร้าง tuple
-    let tup: (i32, f64, bool) = (500, 6.4, true);
-    
-    // Destructuring
-    let (x, y, z) = tup;
-    println!("x={}, y={}, z={}", x, y, z);
-    
-    // Access by index
-    println!("tup.0={}, tup.1={}, tup.2={}", tup.0, tup.1, tup.2);
-    
-    // Unit tuple (ไม่มีค่า)
-    let unit: () = ();
-    println!("unit={:?}", unit);
+ // สร้าง tuple
+ let tup: (i32, f64, bool) = (500, 6.4, true);
+ 
+ // Destructuring
+ let (x, y, z) = tup;
+ println!("x={}, y={}, z={}", x, y, z);
+ 
+ // Access by index
+ println!("tup.0={}, tup.1={}, tup.2={}", tup.0, tup.1, tup.2);
+ 
+ // Unit tuple (ไม่มีค่า)
+ let unit: () = ();
+ println!("unit={:?}", unit);
 }
 ```
 
@@ -293,25 +304,25 @@ Array มีขนาดคงที่ และทุก element มี type �
 
 ```rust
 fn main() {
-    // สร้าง array
-    let a: [i32; 5] = [1, 2, 3, 4, 5];
-    println!("array: {:?}", a);
-    
-    // Access by index
-    println!("a[0]={}, a[4]={}", a[0], a[4]);
-    
-    // Array with same value
-    let zeros = [0; 5];  // [0, 0, 0, 0, 0]
-    println!("zeros: {:?}", zeros);
-    
-    // Length
-    println!("length: {}", a.len());
-    
-    // Iterate
-    for element in &a {
-        print!("{} ", element);
-    }
-    println!();
+ // สร้าง array
+ let a: [i32; 5] = [1, 2, 3, 4, 5];
+ println!("array: {:?}", a);
+ 
+ // Access by index
+ println!("a[0]={}, a[4]={}", a[0], a[4]);
+ 
+ // Array with same value
+ let zeros = [0; 5]; // [0, 0, 0, 0, 0]
+ println!("zeros: {:?}", zeros);
+ 
+ // Length
+ println!("length: {}", a.len());
+ 
+ // Iterate
+ for element in &a {
+ print!("{} ", element);
+ }
+ println!();
 }
 ```
 
@@ -335,13 +346,13 @@ fn main() {
 
 ```rust
 fn main() {
-    // Rust เดา type ได้
-    let x = 5;          // i32 (default for integers)
-    let y = 2.0;        // f64 (default for floats)
-    let z = true;       // bool
-    let s = "hello";    // &str
-    
-    println!("x={}, y={}, z={}, s={}", x, y, z, s);
+ // Rust เดา type ได้
+ let x = 5; // i32 (default for integers)
+ let y = 2.0; // f64 (default for floats)
+ let z = true; // bool
+ let s = "hello"; // &str
+ 
+ println!("x={}, y={}, z={}, s={}", x, y, z, s);
 }
 ```
 
@@ -353,21 +364,21 @@ fn main() {
 
 ```rust
 fn main() {
-    // ต้องระบุ type เมื่อ:
-    
-    // 1. Parse string to number
-    let guess: u32 = "42".parse().expect("Not a number");
-    println!("guess: {}", guess);
-    
-    // 2. Collection ที่ยังไม่มี element
-    let numbers: Vec<i32> = Vec::new();
-    println!("numbers: {:?}", numbers);
-    
-    // 3. Function parameters (บังคับเสมอ)
-    fn add(a: i32, b: i32) -> i32 {
-        a + b
-    }
-    println!("1 + 2 = {}", add(1, 2));
+ // ต้องระบุ type เมื่อ:
+ 
+ // 1. Parse string to number
+ let guess: u32 = "42".parse().expect("Not a number");
+ println!("guess: {}", guess);
+ 
+ // 2. Collection ที่ยังไม่มี element
+ let numbers: Vec<i32> = Vec::new();
+ println!("numbers: {:?}", numbers);
+ 
+ // 3. Function parameters (บังคับเสมอ)
+ fn add(a: i32, b: i32) -> i32 {
+ a + b
+ }
+ println!("1 + 2 = {}", add(1, 2));
 }
 ```
 
@@ -387,12 +398,12 @@ const MAX_POINTS: u32 = 100_000;
 const PI: f64 = 3.14159265359;
 
 fn main() {
-    println!("MAX_POINTS: {}", MAX_POINTS);
-    println!("PI: {}", PI);
-    
-    // let: runtime, อยู่ใน scope
-    let x = 5;
-    println!("x: {}", x);
+ println!("MAX_POINTS: {}", MAX_POINTS);
+ println!("PI: {}", PI);
+ 
+ // let: runtime, อยู่ใน scope
+ let x = 5;
+ println!("x: {}", x);
 }
 ```
 
@@ -403,8 +414,13 @@ fn main() {
 | | `const` | `static` |
 |---|---------|----------|
 | Memory | Inline everywhere | Fixed address |
-| Mutable | ❌ Never | ✅ With `static mut` (unsafe) |
+| Mutable | Never | With `static mut` (unsafe) |
 | ใช้เมื่อ | ค่าคงที่ทั่วไป | Global state (rare) |
+
+::: best-practice
+**ใช้ `const` เป็นหลัก**
+ใช้ `const` เสมอสำหรับค่าคงที่ global. หลีกเลี่ยง `static` เว้นแต่จะจำเป็นจริงๆ (เช่น FFI หรือ low-level memory layout)
+:::
 
 ---
 
@@ -414,12 +430,12 @@ fn main() {
 
 ```rust
 let x = 5;
-x = 6;  // ❌ ERROR!
+x = 6; // ERROR!
 ```
 
 **วิธีแก้:**
 ```rust
-let mut x = 5;  // ✅ เพิ่ม mut
+let mut x = 5; // เพิ่ม mut
 x = 6;
 ```
 :::
@@ -427,20 +443,20 @@ x = 6;
 :::danger Error: Mismatched types
 
 ```rust
-let x: i32 = "hello";  // ❌ ERROR!
+let x: i32 = "hello"; // ERROR!
 ```
 
 **วิธีแก้:**
 ```rust
-let x: i32 = 42;           // ✅ ใส่ค่าที่ถูก type
-let y: &str = "hello";     // ✅ หรือเปลี่ยน type
+let x: i32 = 42; // ใส่ค่าที่ถูก type
+let y: &str = "hello"; // หรือเปลี่ยน type
 ```
 :::
 
 :::warning Warning: Unused mut
 
 ```rust
-let mut x = 5;  // ⚠️ warning: variable does not need to be mutable
+let mut x = 5; // warning: variable does not need to be mutable
 println!("{}", x);
 ```
 

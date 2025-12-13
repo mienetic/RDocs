@@ -1,6 +1,6 @@
 # Pattern Matching
 
-Pattern Matching ใน Rust ทรงพลังมาก! ไม่ใช่แค่ switch-case ธรรมดา 🎯
+Pattern Matching ใน Rust ทรงพลังมาก! ไม่ใช่แค่ switch-case ธรรมดา 
 
 :::tip Pattern Matching คือ superpower!
 มันสามารถ destructure, bind values, และ guard conditions ได้ในที่เดียว!
@@ -16,23 +16,23 @@ Pattern Matching ใน Rust ทรงพลังมาก! ไม่ใช่�
 
 ```rust
 fn main() {
-    let number = 3;
-    
-    match number {
-        1 => println!("หนึ่ง"),
-        2 => println!("สอง"),
-        3 => println!("สาม"),
-        _ => println!("อื่นๆ"),  // _ = wildcard (catch all)
-    }
-    
-    // Match is an expression! (มีค่า return)
-    let result = match number {
-        1 => "one",
-        2 => "two",
-        3 => "three",
-        _ => "other",
-    };
-    println!("Result: {}", result);
+ let number = 3;
+ 
+ match number {
+ 1 => println!("หนึ่ง"),
+ 2 => println!("สอง"),
+ 3 => println!("สาม"),
+ _ => println!("อื่นๆ"), // _ = wildcard (catch all)
+ }
+ 
+ // Match is an expression! (มีค่า return)
+ let result = match number {
+ 1 => "one",
+ 2 => "two",
+ 3 => "three",
+ _ => "other",
+ };
+ println!("Result: {}", result);
 }
 ```
 
@@ -44,21 +44,27 @@ fn main() {
 
 ```rust
 fn main() {
-    let x = 5;
-    
-    match x {
-        // หลาย patterns ด้วย |
-        1 | 2 | 3 => println!("1, 2, or 3"),
-        
-        // Range patterns
-        4..=10 => println!("4 ถึง 10"),
-        
-        _ => println!("อื่นๆ"),
-    }
+ let x = 5;
+ 
+ match x {
+ // หลาย patterns ด้วย |
+ 1 | 2 | 3 => println!("1, 2, or 3"),
+ 
+ // Range patterns
+ 4..=10 => println!("4 ถึง 10"),
+ 
+ _ => println!("อื่นๆ"),
+ }
 }
 ```
 
 </RustPlayground>
+
+::: pitfall
+**Match ต้องครอบคลุมทุกกรณี (Exhaustive)**
+Rust บังคับให้คุณจัดการทุกความเป็นไปได้ (เช่นถ้า match `u8` ต้องครบ 0-255)
+ถ้าไม่อยากเขียนทุกเคส **ต้องใช้ `_` (Wildcard)** เสมอ!
+:::
 
 ---
 
@@ -70,18 +76,18 @@ fn main() {
 
 ```rust
 fn main() {
-    let point = (3, 5);
-    
-    match point {
-        (0, 0) => println!("Origin!"),
-        (x, 0) => println!("บน x-axis ที่ x={}", x),
-        (0, y) => println!("บน y-axis ที่ y={}", y),
-        (x, y) => println!("จุด ({}, {})", x, y),
-    }
-    
-    // ใช้ let destructuring ก็ได้
-    let (x, y) = point;
-    println!("x={}, y={}", x, y);
+ let point = (3, 5);
+ 
+ match point {
+ (0, 0) => println!("Origin!"),
+ (x, 0) => println!("บน x-axis ที่ x={}", x),
+ (0, y) => println!("บน y-axis ที่ y={}", y),
+ (x, y) => println!("จุด ({}, {})", x, y),
+ }
+ 
+ // ใช้ let destructuring ก็ได้
+ let (x, y) = point;
+ println!("x={}, y={}", x, y);
 }
 ```
 
@@ -93,28 +99,28 @@ fn main() {
 
 ```rust
 struct Point {
-    x: i32,
-    y: i32,
+ x: i32,
+ y: i32,
 }
 
 fn main() {
-    let p = Point { x: 10, y: 20 };
-    
-    // Destructure ใน match
-    match p {
-        Point { x: 0, y: 0 } => println!("Origin!"),
-        Point { x, y: 0 } => println!("บน x-axis ที่ {}", x),
-        Point { x: 0, y } => println!("บน y-axis ที่ {}", y),
-        Point { x, y } => println!("Point({}, {})", x, y),
-    }
-    
-    // Destructure ด้วย let
-    let Point { x, y } = p;
-    println!("x={}, y={}", x, y);
-    
-    // Rename
-    let Point { x: a, y: b } = p;
-    println!("a={}, b={}", a, b);
+ let p = Point { x: 10, y: 20 };
+ 
+ // Destructure ใน match
+ match p {
+ Point { x: 0, y: 0 } => println!("Origin!"),
+ Point { x, y: 0 } => println!("บน x-axis ที่ {}", x),
+ Point { x: 0, y } => println!("บน y-axis ที่ {}", y),
+ Point { x, y } => println!("Point({}, {})", x, y),
+ }
+ 
+ // Destructure ด้วย let
+ let Point { x, y } = p;
+ println!("x={}, y={}", x, y);
+ 
+ // Rename
+ let Point { x: a, y: b } = p;
+ println!("a={}, b={}", a, b);
 }
 ```
 
@@ -126,27 +132,27 @@ fn main() {
 
 ```rust
 enum Message {
-    Quit,
-    Move { x: i32, y: i32 },
-    Write(String),
-    Color(u8, u8, u8),
+ Quit,
+ Move { x: i32, y: i32 },
+ Write(String),
+ Color(u8, u8, u8),
 }
 
 fn main() {
-    let msg = Message::Color(255, 128, 0);
-    
-    match msg {
-        Message::Quit => println!("Quit!"),
-        Message::Move { x, y } => {
-            println!("Move to ({}, {})", x, y);
-        }
-        Message::Write(text) => {
-            println!("Text: {}", text);
-        }
-        Message::Color(r, g, b) => {
-            println!("RGB({}, {}, {})", r, g, b);
-        }
-    }
+ let msg = Message::Color(255, 128, 0);
+ 
+ match msg {
+ Message::Quit => println!("Quit!"),
+ Message::Move { x, y } => {
+ println!("Move to ({}, {})", x, y);
+ }
+ Message::Write(text) => {
+ println!("Text: {}", text);
+ }
+ Message::Color(r, g, b) => {
+ println!("RGB({}, {}, {})", r, g, b);
+ }
+ }
 }
 ```
 
@@ -162,25 +168,25 @@ fn main() {
 
 ```rust
 fn main() {
-    let some_value = Some(42);
-    
-    // แบบ match (verbose)
-    match some_value {
-        Some(x) => println!("Got: {}", x),
-        None => (),  // ไม่ทำอะไร
-    }
-    
-    // แบบ if let (กระชับกว่า)
-    if let Some(x) = some_value {
-        println!("Got: {}", x);
-    }
-    
-    // if let กับ else
-    if let Some(x) = some_value {
-        println!("Got: {}", x);
-    } else {
-        println!("Got nothing!");
-    }
+ let some_value = Some(42);
+ 
+ // แบบ match (verbose)
+ match some_value {
+ Some(x) => println!("Got: {}", x),
+ None => (), // ไม่ทำอะไร
+ }
+ 
+ // แบบ if let (กระชับกว่า)
+ if let Some(x) = some_value {
+ println!("Got: {}", x);
+ }
+ 
+ // if let กับ else
+ if let Some(x) = some_value {
+ println!("Got: {}", x);
+ } else {
+ println!("Got nothing!");
+ }
 }
 ```
 
@@ -192,14 +198,14 @@ fn main() {
 
 ```rust
 fn main() {
-    let mut stack = vec![1, 2, 3];
-    
-    // ทำซ้ำจนกว่า pop() จะได้ None
-    while let Some(top) = stack.pop() {
-        println!("Got: {}", top);
-    }
-    
-    println!("Stack is now empty!");
+ let mut stack = vec![1, 2, 3];
+ 
+ // ทำซ้ำจนกว่า pop() จะได้ None
+ while let Some(top) = stack.pop() {
+ println!("Got: {}", top);
+ }
+ 
+ println!("Stack is now empty!");
 }
 ```
 
@@ -211,15 +217,15 @@ fn main() {
 
 ```rust
 fn main() {
-    let some_value = Some(42);
-    
-    // let-else: ต้อง match หรือ return/break/panic
-    let Some(x) = some_value else {
-        println!("No value!");
-        return;
-    };
-    
-    println!("Got: {}", x);
+ let some_value = Some(42);
+ 
+ // let-else: ต้อง match หรือ return/break/panic
+ let Some(x) = some_value else {
+ println!("No value!");
+ return;
+ };
+ 
+ println!("Got: {}", x);
 }
 ```
 
@@ -233,23 +239,23 @@ fn main() {
 
 ```rust
 fn main() {
-    let num = Some(5);
-    
-    match num {
-        Some(x) if x < 5 => println!("น้อยกว่า 5"),
-        Some(x) if x == 5 => println!("เท่ากับ 5 พอดี!"),
-        Some(x) => println!("มากกว่า 5: {}", x),
-        None => println!("ไม่มีค่า"),
-    }
-    
-    // Guard กับหลาย conditions
-    let pair = (2, -2);
-    match pair {
-        (x, y) if x == y => println!("เท่ากัน"),
-        (x, y) if x + y == 0 => println!("บวกกันได้ 0"),
-        (x, _) if x % 2 == 1 => println!("{} เป็นเลขคี่", x),
-        _ => println!("อื่นๆ"),
-    }
+ let num = Some(5);
+ 
+ match num {
+ Some(x) if x < 5 => println!("น้อยกว่า 5"),
+ Some(x) if x == 5 => println!("เท่ากับ 5 พอดี!"),
+ Some(x) => println!("มากกว่า 5: {}", x),
+ None => println!("ไม่มีค่า"),
+ }
+ 
+ // Guard กับหลาย conditions
+ let pair = (2, -2);
+ match pair {
+ (x, y) if x == y => println!("เท่ากัน"),
+ (x, y) if x + y == 0 => println!("บวกกันได้ 0"),
+ (x, _) if x % 2 == 1 => println!("{} เป็นเลขคี่", x),
+ _ => println!("อื่นๆ"),
+ }
 }
 ```
 
@@ -263,15 +269,15 @@ fn main() {
 
 ```rust
 fn main() {
-    let age = 25;
-    
-    match age {
-        // Bind value ขณะ match
-        n @ 0..=12 => println!("เด็ก: {} ปี", n),
-        n @ 13..=19 => println!("วัยรุ่น: {} ปี", n),
-        n @ 20..=59 => println!("ผู้ใหญ่: {} ปี", n),
-        n @ 60.. => println!("ผู้สูงอายุ: {} ปี", n),
-    }
+ let age = 25;
+ 
+ match age {
+ // Bind value ขณะ match
+ n @ 0..=12 => println!("เด็ก: {} ปี", n),
+ n @ 13..=19 => println!("วัยรุ่น: {} ปี", n),
+ n @ 20..=59 => println!("ผู้ใหญ่: {} ปี", n),
+ n @ 60.. => println!("ผู้สูงอายุ: {} ปี", n),
+ }
 }
 ```
 
@@ -285,25 +291,25 @@ fn main() {
 
 ```rust
 enum Message {
-    Hello { id: i32 },
+ Hello { id: i32 },
 }
 
 fn main() {
-    let msg = Message::Hello { id: 42 };
-    
-    match msg {
-        Message::Hello { 
-            id: id_var @ 3..=7 
-        } => println!("Found id in range: {}", id_var),
-        
-        Message::Hello { id: 10..=12 } => {
-            println!("Found id in another range");
-        }
-        
-        Message::Hello { id } => {
-            println!("Found some other id: {}", id);
-        }
-    }
+ let msg = Message::Hello { id: 42 };
+ 
+ match msg {
+ Message::Hello { 
+ id: id_var @ 3..=7 
+ } => println!("Found id in range: {}", id_var),
+ 
+ Message::Hello { id: 10..=12 } => {
+ println!("Found id in another range");
+ }
+ 
+ Message::Hello { id } => {
+ println!("Found some other id: {}", id);
+ }
+ }
 }
 ```
 
@@ -317,24 +323,24 @@ fn main() {
 
 ```rust
 fn main() {
-    let numbers = (1, 2, 3, 4, 5);
-    
-    match numbers {
-        // _ = ignore single value
-        (first, _, third, _, fifth) => {
-            println!("first={}, third={}, fifth={}", first, third, fifth);
-        }
-    }
-    
-    // .. = ignore multiple values
-    match numbers {
-        (first, .., last) => {
-            println!("first={}, last={}", first, last);
-        }
-    }
-    
-    // _name = ignore but still bind (no unused warning)
-    let _unused = 42;
+ let numbers = (1, 2, 3, 4, 5);
+ 
+ match numbers {
+ // _ = ignore single value
+ (first, _, third, _, fifth) => {
+ println!("first={}, third={}, fifth={}", first, third, fifth);
+ }
+ }
+ 
+ // .. = ignore multiple values
+ match numbers {
+ (first, .., last) => {
+ println!("first={}, last={}", first, last);
+ }
+ }
+ 
+ // _name = ignore but still bind (no unused warning)
+ let _unused = 42;
 }
 ```
 
@@ -351,38 +357,38 @@ fn main() {
 ```rust
 #[derive(Debug)]
 enum Config {
-    Database { host: String, port: u16 },
-    Cache { enabled: bool },
-    Server { port: u16 },
+ Database { host: String, port: u16 },
+ Cache { enabled: bool },
+ Server { port: u16 },
 }
 
 fn process_config(config: Config) {
-    match config {
-        Config::Database { host, port } => {
-            println!("DB: {}:{}", host, port);
-        }
-        Config::Cache { enabled: true } => {
-            println!("Cache enabled!");
-        }
-        Config::Cache { enabled: false } => {
-            println!("Cache disabled");
-        }
-        Config::Server { port } if port < 1024 => {
-            println!("Warning: privileged port {}", port);
-        }
-        Config::Server { port } => {
-            println!("Server on port {}", port);
-        }
-    }
+ match config {
+ Config::Database { host, port } => {
+ println!("DB: {}:{}", host, port);
+ }
+ Config::Cache { enabled: true } => {
+ println!("Cache enabled!");
+ }
+ Config::Cache { enabled: false } => {
+ println!("Cache disabled");
+ }
+ Config::Server { port } if port < 1024 => {
+ println!("Warning: privileged port {}", port);
+ }
+ Config::Server { port } => {
+ println!("Server on port {}", port);
+ }
+ }
 }
 
 fn main() {
-    process_config(Config::Database { 
-        host: String::from("localhost"), 
-        port: 5432 
-    });
-    process_config(Config::Cache { enabled: true });
-    process_config(Config::Server { port: 80 });
+ process_config(Config::Database { 
+ host: String::from("localhost"), 
+ port: 5432 
+ });
+ process_config(Config::Cache { enabled: true });
+ process_config(Config::Server { port: 80 });
 }
 ```
 
@@ -394,24 +400,24 @@ fn main() {
 
 ```rust
 fn divide(a: i32, b: i32) -> Option<i32> {
-    if b == 0 { None } else { Some(a / b) }
+ if b == 0 { None } else { Some(a / b) }
 }
 
 fn main() {
-    // Chained pattern matching
-    let results = vec![
-        divide(10, 2),
-        divide(10, 0),
-        divide(20, 4),
-    ];
-    
-    for (i, result) in results.iter().enumerate() {
-        match result {
-            Some(n) if *n > 4 => println!("#{}: Large result: {}", i, n),
-            Some(n) => println!("#{}: Result: {}", i, n),
-            None => println!("#{}: Division by zero!", i),
-        }
-    }
+ // Chained pattern matching
+ let results = vec![
+ divide(10, 2),
+ divide(10, 0),
+ divide(20, 4),
+ ];
+ 
+ for (i, result) in results.iter().enumerate() {
+ match result {
+ Some(n) if *n > 4 => println!("#{}: Large result: {}", i, n),
+ Some(n) => println!("#{}: Result: {}", i, n),
+ None => println!("#{}: Division by zero!", i),
+ }
+ }
 }
 ```
 

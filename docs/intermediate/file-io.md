@@ -4,15 +4,15 @@
 
 ```mermaid
 flowchart LR
-    PROGRAM["Program"] -->|"read"| FILE["File"]
-    FILE -->|"write"| PROGRAM
-    
-    PROGRAM --> STR["String"]
-    PROGRAM --> BYTES["Bytes"]
-    PROGRAM --> LINES["Lines"]
-    
-    style PROGRAM fill:#3b82f6,stroke:#1d4ed8,color:#fff
-    style FILE fill:#22c55e,stroke:#15803d,color:#fff
+ PROGRAM["Program"] -->|"read"| FILE["File"]
+ FILE -->|"write"| PROGRAM
+ 
+ PROGRAM --> STR["String"]
+ PROGRAM --> BYTES["Bytes"]
+ PROGRAM --> LINES["Lines"]
+ 
+ style PROGRAM fill:#3b82f6,stroke:#1d4ed8,color:#fff
+ style FILE fill:#22c55e,stroke:#15803d,color:#fff
 ```
 
 ---
@@ -27,15 +27,15 @@ flowchart LR
 use std::fs;
 
 fn main() {
-    // วิธีง่ายที่สุด - อ่านทั้งไฟล์เป็น String
-    // (ใน Playground ใช้ตัวอย่าง)
-    let content = "Hello, World!\nLine 2\nLine 3";
-    
-    // ในโค้ดจริง:
-    // let content = fs::read_to_string("hello.txt")
-    //     .expect("Could not read file");
-    
-    println!("File content:\n{}", content);
+ // วิธีง่ายที่สุด - อ่านทั้งไฟล์เป็น String
+ // (ใน Playground ใช้ตัวอย่าง)
+ let content = "Hello, World!\nLine 2\nLine 3";
+ 
+ // ในโค้ดจริง:
+ // let content = fs::read_to_string("hello.txt")
+ // .expect("Could not read file");
+ 
+ println!("File content:\n{}", content);
 }
 ```
 
@@ -48,14 +48,14 @@ use std::fs;
 use std::io;
 
 fn read_file(path: &str) -> Result<String, io::Error> {
-    fs::read_to_string(path)
+ fs::read_to_string(path)
 }
 
 fn main() {
-    match read_file("config.txt") {
-        Ok(content) => println!("Content: {}", content),
-        Err(e) => eprintln!("Error reading file: {}", e),
-    }
+ match read_file("config.txt") {
+ Ok(content) => println!("Content: {}", content),
+ Err(e) => eprintln!("Error reading file: {}", e),
+ }
 }
 ```
 
@@ -65,10 +65,10 @@ fn main() {
 use std::fs;
 
 fn main() -> std::io::Result<()> {
-    // อ่านเป็น bytes (สำหรับ binary files)
-    let bytes = fs::read("image.png")?;
-    println!("File size: {} bytes", bytes.len());
-    Ok(())
+ // อ่านเป็น bytes (สำหรับ binary files)
+ let bytes = fs::read("image.png")?;
+ println!("File size: {} bytes", bytes.len());
+ Ok(())
 }
 ```
 
@@ -82,13 +82,13 @@ fn main() -> std::io::Result<()> {
 
 ```rust
 fn main() {
-    // ในโค้ดจริง:
-    // use std::fs;
-    // fs::write("output.txt", "Hello, World!")
-    //     .expect("Could not write file");
-    
-    let content = "Hello, World!";
-    println!("Would write: {}", content);
+ // ในโค้ดจริง:
+ // use std::fs;
+ // fs::write("output.txt", "Hello, World!")
+ // .expect("Could not write file");
+ 
+ let content = "Hello, World!";
+ println!("Would write: {}", content);
 }
 ```
 
@@ -101,14 +101,14 @@ use std::fs;
 use std::io;
 
 fn write_file(path: &str, content: &str) -> Result<(), io::Error> {
-    fs::write(path, content)
+ fs::write(path, content)
 }
 
 fn main() {
-    match write_file("output.txt", "Hello, Rust!") {
-        Ok(()) => println!("File written successfully!"),
-        Err(e) => eprintln!("Error writing file: {}", e),
-    }
+ match write_file("output.txt", "Hello, Rust!") {
+ Ok(()) => println!("File written successfully!"),
+ Err(e) => eprintln!("Error writing file: {}", e),
+ }
 }
 ```
 
@@ -118,9 +118,9 @@ fn main() {
 use std::fs;
 
 fn main() -> std::io::Result<()> {
-    let data: Vec<u8> = vec![0x48, 0x65, 0x6c, 0x6c, 0x6f];  // "Hello"
-    fs::write("binary.dat", &data)?;
-    Ok(())
+ let data: Vec<u8> = vec![0x48, 0x65, 0x6c, 0x6c, 0x6f]; // "Hello"
+ fs::write("binary.dat", &data)?;
+ Ok(())
 }
 ```
 
@@ -135,16 +135,16 @@ use std::fs::File;
 use std::io::{BufReader, BufRead};
 
 fn main() -> std::io::Result<()> {
-    let file = File::open("data.txt")?;
-    let reader = BufReader::new(file);
-    
-    // อ่านทีละบรรทัด
-    for line in reader.lines() {
-        let line = line?;
-        println!("{}", line);
-    }
-    
-    Ok(())
+ let file = File::open("data.txt")?;
+ let reader = BufReader::new(file);
+ 
+ // อ่านทีละบรรทัด
+ for line in reader.lines() {
+ let line = line?;
+ println!("{}", line);
+ }
+ 
+ Ok(())
 }
 ```
 
@@ -155,17 +155,17 @@ use std::fs::File;
 use std::io::{BufWriter, Write};
 
 fn main() -> std::io::Result<()> {
-    let file = File::create("output.txt")?;
-    let mut writer = BufWriter::new(file);
-    
-    writeln!(writer, "Line 1")?;
-    writeln!(writer, "Line 2")?;
-    writeln!(writer, "Line 3")?;
-    
-    // Flush เพื่อให้แน่ใจว่าเขียนเสร็จ
-    writer.flush()?;
-    
-    Ok(())
+ let file = File::create("output.txt")?;
+ let mut writer = BufWriter::new(file);
+ 
+ writeln!(writer, "Line 1")?;
+ writeln!(writer, "Line 2")?;
+ writeln!(writer, "Line 3")?;
+ 
+ // Flush เพื่อให้แน่ใจว่าเขียนเสร็จ
+ writer.flush()?;
+ 
+ Ok(())
 }
 ```
 
@@ -180,21 +180,21 @@ use std::fs::{File, OpenOptions};
 use std::io::Write;
 
 fn main() -> std::io::Result<()> {
-    // Read only
-    let _file = File::open("input.txt")?;
-    
-    // Create new (or truncate existing)
-    let _file = File::create("output.txt")?;
-    
-    // Append mode
-    let mut file = OpenOptions::new()
-        .append(true)
-        .create(true)
-        .open("log.txt")?;
-    
-    writeln!(file, "New log entry")?;
-    
-    Ok(())
+ // Read only
+ let _file = File::open("input.txt")?;
+ 
+ // Create new (or truncate existing)
+ let _file = File::create("output.txt")?;
+ 
+ // Append mode
+ let mut file = OpenOptions::new()
+ .append(true)
+ .create(true)
+ .open("log.txt")?;
+ 
+ writeln!(file, "New log entry")?;
+ 
+ Ok(())
 }
 ```
 
@@ -220,19 +220,19 @@ fn main() -> std::io::Result<()> {
 use std::path::{Path, PathBuf};
 
 fn main() {
-    // Path (borrowed) vs PathBuf (owned)
-    let path = Path::new("/home/user/file.txt");
-    
-    println!("File name: {:?}", path.file_name());
-    println!("Extension: {:?}", path.extension());
-    println!("Parent: {:?}", path.parent());
-    println!("Exists: {}", path.exists());
-    
-    // PathBuf - สร้าง path ใหม่
-    let mut path_buf = PathBuf::from("/home/user");
-    path_buf.push("documents");
-    path_buf.push("file.txt");
-    println!("PathBuf: {:?}", path_buf);
+ // Path (borrowed) vs PathBuf (owned)
+ let path = Path::new("/home/user/file.txt");
+ 
+ println!("File name: {:?}", path.file_name());
+ println!("Extension: {:?}", path.extension());
+ println!("Parent: {:?}", path.parent());
+ println!("Exists: {}", path.exists());
+ 
+ // PathBuf - สร้าง path ใหม่
+ let mut path_buf = PathBuf::from("/home/user");
+ path_buf.push("documents");
+ path_buf.push("file.txt");
+ println!("PathBuf: {:?}", path_buf);
 }
 ```
 
@@ -260,19 +260,19 @@ fn main() {
 use std::fs;
 
 fn main() -> std::io::Result<()> {
-    // List files in directory
-    for entry in fs::read_dir(".")? {
-        let entry = entry?;
-        let path = entry.path();
-        
-        if path.is_file() {
-            println!("File: {:?}", path);
-        } else if path.is_dir() {
-            println!("Dir: {:?}", path);
-        }
-    }
-    
-    Ok(())
+ // List files in directory
+ for entry in fs::read_dir(".")? {
+ let entry = entry?;
+ let path = entry.path();
+ 
+ if path.is_file() {
+ println!("File: {:?}", path);
+ } else if path.is_dir() {
+ println!("Dir: {:?}", path);
+ }
+ }
+ 
+ Ok(())
 }
 ```
 
@@ -282,19 +282,19 @@ fn main() -> std::io::Result<()> {
 use std::fs;
 
 fn main() -> std::io::Result<()> {
-    // Create directory
-    fs::create_dir("new_folder")?;
-    
-    // Create nested directories
-    fs::create_dir_all("parent/child/grandchild")?;
-    
-    // Remove empty directory
-    fs::remove_dir("new_folder")?;
-    
-    // Remove directory with contents
-    fs::remove_dir_all("parent")?;
-    
-    Ok(())
+ // Create directory
+ fs::create_dir("new_folder")?;
+ 
+ // Create nested directories
+ fs::create_dir_all("parent/child/grandchild")?;
+ 
+ // Remove empty directory
+ fs::remove_dir("new_folder")?;
+ 
+ // Remove directory with contents
+ fs::remove_dir_all("parent")?;
+ 
+ Ok(())
 }
 ```
 
@@ -304,21 +304,21 @@ fn main() -> std::io::Result<()> {
 use std::fs;
 
 fn main() -> std::io::Result<()> {
-    // Copy file
-    fs::copy("source.txt", "destination.txt")?;
-    
-    // Rename/Move file
-    fs::rename("old_name.txt", "new_name.txt")?;
-    
-    // Remove file
-    fs::remove_file("unwanted.txt")?;
-    
-    // Get file metadata
-    let metadata = fs::metadata("file.txt")?;
-    println!("Size: {} bytes", metadata.len());
-    println!("Is file: {}", metadata.is_file());
-    
-    Ok(())
+ // Copy file
+ fs::copy("source.txt", "destination.txt")?;
+ 
+ // Rename/Move file
+ fs::rename("old_name.txt", "new_name.txt")?;
+ 
+ // Remove file
+ fs::remove_file("unwanted.txt")?;
+ 
+ // Get file metadata
+ let metadata = fs::metadata("file.txt")?;
+ println!("Size: {} bytes", metadata.len());
+ println!("Is file: {}", metadata.is_file());
+ 
+ Ok(())
 }
 ```
 
@@ -334,40 +334,40 @@ fn main() -> std::io::Result<()> {
 use std::collections::HashMap;
 
 fn parse_config(content: &str) -> HashMap<String, String> {
-    let mut config = HashMap::new();
-    
-    for line in content.lines() {
-        let line = line.trim();
-        
-        // Skip comments and empty lines
-        if line.is_empty() || line.starts_with('#') {
-            continue;
-        }
-        
-        // Parse key=value
-        if let Some(pos) = line.find('=') {
-            let key = line[..pos].trim().to_string();
-            let value = line[pos + 1..].trim().to_string();
-            config.insert(key, value);
-        }
-    }
-    
-    config
+ let mut config = HashMap::new();
+ 
+ for line in content.lines() {
+ let line = line.trim();
+ 
+ // Skip comments and empty lines
+ if line.is_empty() || line.starts_with('#') {
+ continue;
+ }
+ 
+ // Parse key=value
+ if let Some(pos) = line.find('=') {
+ let key = line[..pos].trim().to_string();
+ let value = line[pos + 1..].trim().to_string();
+ config.insert(key, value);
+ }
+ }
+ 
+ config
 }
 
 fn main() {
-    let content = r#"
+ let content = r#"
 # Database config
 host = localhost
 port = 5432
 database = myapp
 "#;
-    
-    let config = parse_config(content);
-    
-    for (key, value) in &config {
-        println!("{} = {}", key, value);
-    }
+ 
+ let config = parse_config(content);
+ 
+ for (key, value) in &config {
+ println!("{} = {}", key, value);
+ }
 }
 ```
 
@@ -381,21 +381,21 @@ use std::io::Write;
 use chrono::Local;
 
 fn log(message: &str) -> std::io::Result<()> {
-    let mut file = OpenOptions::new()
-        .create(true)
-        .append(true)
-        .open("app.log")?;
-    
-    let timestamp = Local::now().format("%Y-%m-%d %H:%M:%S");
-    writeln!(file, "[{}] {}", timestamp, message)?;
-    
-    Ok(())
+ let mut file = OpenOptions::new()
+ .create(true)
+ .append(true)
+ .open("app.log")?;
+ 
+ let timestamp = Local::now().format("%Y-%m-%d %H:%M:%S");
+ writeln!(file, "[{}] {}", timestamp, message)?;
+ 
+ Ok(())
 }
 
 fn main() {
-    log("Application started").unwrap();
-    log("Processing data...").unwrap();
-    log("Application finished").unwrap();
+ log("Application started").unwrap();
+ log("Processing data...").unwrap();
+ log("Application finished").unwrap();
 }
 ```
 
@@ -405,24 +405,24 @@ fn main() {
 
 ```rust
 fn main() {
-    let csv_data = r#"name,age,city
+ let csv_data = r#"name,age,city
 Alice,30,Bangkok
 Bob,25,Chiang Mai
 Charlie,35,Phuket"#;
-    
-    let lines: Vec<&str> = csv_data.lines().collect();
-    let headers: Vec<&str> = lines[0].split(',').collect();
-    
-    println!("Headers: {:?}\n", headers);
-    
-    for line in &lines[1..] {
-        let values: Vec<&str> = line.split(',').collect();
-        
-        for (header, value) in headers.iter().zip(values.iter()) {
-            println!("{}: {}", header, value);
-        }
-        println!("---");
-    }
+ 
+ let lines: Vec<&str> = csv_data.lines().collect();
+ let headers: Vec<&str> = lines[0].split(',').collect();
+ 
+ println!("Headers: {:?}\n", headers);
+ 
+ for line in &lines[1..] {
+ let values: Vec<&str> = line.split(',').collect();
+ 
+ for (header, value) in headers.iter().zip(values.iter()) {
+ println!("{}: {}", header, value);
+ }
+ println!("---");
+ }
 }
 ```
 
@@ -439,9 +439,9 @@ use std::fs;
 use std::io;
 
 fn process_file(path: &str) -> Result<String, io::Error> {
-    let content = fs::read_to_string(path)?;
-    let processed = content.to_uppercase();
-    Ok(processed)
+ let content = fs::read_to_string(path)?;
+ let processed = content.to_uppercase();
+ Ok(processed)
 }
 ```
 
@@ -453,23 +453,23 @@ use std::io;
 
 #[derive(Debug)]
 enum FileError {
-    NotFound,
-    PermissionDenied,
-    Other(String),
+ NotFound,
+ PermissionDenied,
+ Other(String),
 }
 
 impl From<io::Error> for FileError {
-    fn from(err: io::Error) -> Self {
-        match err.kind() {
-            io::ErrorKind::NotFound => FileError::NotFound,
-            io::ErrorKind::PermissionDenied => FileError::PermissionDenied,
-            _ => FileError::Other(err.to_string()),
-        }
-    }
+ fn from(err: io::Error) -> Self {
+ match err.kind() {
+ io::ErrorKind::NotFound => FileError::NotFound,
+ io::ErrorKind::PermissionDenied => FileError::PermissionDenied,
+ _ => FileError::Other(err.to_string()),
+ }
+ }
 }
 
 fn read_config(path: &str) -> Result<String, FileError> {
-    Ok(fs::read_to_string(path)?)
+ Ok(fs::read_to_string(path)?)
 }
 ```
 

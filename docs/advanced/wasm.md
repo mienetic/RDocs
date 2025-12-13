@@ -1,6 +1,6 @@
 # WebAssembly (WASM)
 
-Compile Rust to WebAssembly! 🕸️
+Compile Rust to WebAssembly! 
 
 :::tip Rust + WASM = Perfect Match!
 Rust เป็นหนึ่งในภาษาที่ดีที่สุดสำหรับ WASM - เร็ว, เล็ก, และปลอดภัย!
@@ -61,13 +61,13 @@ use wasm_bindgen::prelude::*;
 // Export function to JavaScript
 #[wasm_bindgen]
 pub fn greet(name: &str) -> String {
-    format!("Hello, {}!", name)
+ format!("Hello, {}!", name)
 }
 
 // Export with different name
 #[wasm_bindgen(js_name = addNumbers)]
 pub fn add(a: i32, b: i32) -> i32 {
-    a + b
+ a + b
 }
 ```
 
@@ -83,21 +83,21 @@ wasm-pack build --target web
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Rust WASM</title>
+ <title>Rust WASM</title>
 </head>
 <body>
-    <script type="module">
-        import init, { greet, addNumbers } from './pkg/my_wasm.js';
-        
-        async function main() {
-            await init();
-            
-            console.log(greet("World"));
-            console.log(addNumbers(2, 3));
-        }
-        
-        main();
-    </script>
+ <script type="module">
+ import init, { greet, addNumbers } from './pkg/my_wasm.js';
+ 
+ async function main() {
+ await init();
+ 
+ console.log(greet("World"));
+ console.log(addNumbers(2, 3));
+ }
+ 
+ main();
+ </script>
 </body>
 </html>
 ```
@@ -114,24 +114,24 @@ use wasm_bindgen::prelude::*;
 // Import JavaScript function
 #[wasm_bindgen]
 extern "C" {
-    fn alert(s: &str);
-    
-    #[wasm_bindgen(js_namespace = console)]
-    fn log(s: &str);
-    
-    #[wasm_bindgen(js_namespace = console, js_name = log)]
-    fn log_u32(a: u32);
+ fn alert(s: &str);
+ 
+ #[wasm_bindgen(js_namespace = console)]
+ fn log(s: &str);
+ 
+ #[wasm_bindgen(js_namespace = console, js_name = log)]
+ fn log_u32(a: u32);
 }
 
 #[wasm_bindgen]
 pub fn show_alert() {
-    alert("Hello from Rust!");
+ alert("Hello from Rust!");
 }
 
 #[wasm_bindgen]
 pub fn console_log() {
-    log("Logging from Rust");
-    log_u32(42);
+ log("Logging from Rust");
+ log_u32(42);
 }
 ```
 
@@ -142,8 +142,8 @@ use wasm_bindgen::prelude::*;
 
 #[wasm_bindgen]
 extern "C" {
-    #[wasm_bindgen(js_namespace = document)]
-    fn getElementById(id: &str) -> JsValue;
+ #[wasm_bindgen(js_namespace = document)]
+ fn getElementById(id: &str) -> JsValue;
 }
 
 // Or use web-sys crate for full DOM API
@@ -159,11 +159,11 @@ extern "C" {
 [dependencies]
 wasm-bindgen = "0.2"
 web-sys = { version = "0.3", features = [
-    "Document",
-    "Element",
-    "HtmlElement",
-    "Window",
-    "console",
+ "Document",
+ "Element",
+ "HtmlElement",
+ "Window",
+ "console",
 ]}
 ```
 
@@ -174,26 +174,26 @@ use wasm_bindgen::prelude::*;
 use web_sys::{Document, Element, Window};
 
 fn window() -> Window {
-    web_sys::window().expect("no global window")
+ web_sys::window().expect("no global window")
 }
 
 fn document() -> Document {
-    window().document().expect("no document")
+ window().document().expect("no document")
 }
 
 #[wasm_bindgen]
 pub fn update_element(id: &str, text: &str) {
-    let document = document();
-    if let Some(element) = document.get_element_by_id(id) {
-        element.set_text_content(Some(text));
-    }
+ let document = document();
+ if let Some(element) = document.get_element_by_id(id) {
+ element.set_text_content(Some(text));
+ }
 }
 
 #[wasm_bindgen]
 pub fn create_element(tag: &str) -> Element {
-    document()
-        .create_element(tag)
-        .expect("failed to create element")
+ document()
+ .create_element(tag)
+ .expect("failed to create element")
 }
 ```
 
@@ -219,30 +219,30 @@ use wasm_bindgen::prelude::*;
 
 #[wasm_bindgen]
 pub struct Point {
-    x: f64,
-    y: f64,
+ x: f64,
+ y: f64,
 }
 
 #[wasm_bindgen]
 impl Point {
-    #[wasm_bindgen(constructor)]
-    pub fn new(x: f64, y: f64) -> Point {
-        Point { x, y }
-    }
-    
-    #[wasm_bindgen(getter)]
-    pub fn x(&self) -> f64 {
-        self.x
-    }
-    
-    #[wasm_bindgen(getter)]
-    pub fn y(&self) -> f64 {
-        self.y
-    }
-    
-    pub fn distance(&self, other: &Point) -> f64 {
-        ((self.x - other.x).powi(2) + (self.y - other.y).powi(2)).sqrt()
-    }
+ #[wasm_bindgen(constructor)]
+ pub fn new(x: f64, y: f64) -> Point {
+ Point { x, y }
+ }
+ 
+ #[wasm_bindgen(getter)]
+ pub fn x(&self) -> f64 {
+ self.x
+ }
+ 
+ #[wasm_bindgen(getter)]
+ pub fn y(&self) -> f64 {
+ self.y
+ }
+ 
+ pub fn distance(&self, other: &Point) -> f64 {
+ ((self.x - other.x).powi(2) + (self.y - other.y).powi(2)).sqrt()
+ }
 }
 ```
 
@@ -257,17 +257,17 @@ use web_sys::{Request, RequestInit, Response};
 
 #[wasm_bindgen]
 pub async fn fetch_data(url: &str) -> Result<JsValue, JsValue> {
-    let mut opts = RequestInit::new();
-    opts.method("GET");
-    
-    let request = Request::new_with_str_and_init(url, &opts)?;
-    
-    let window = web_sys::window().unwrap();
-    let resp_value = JsFuture::from(window.fetch_with_request(&request)).await?;
-    let resp: Response = resp_value.dyn_into()?;
-    
-    let json = JsFuture::from(resp.json()?).await?;
-    Ok(json)
+ let mut opts = RequestInit::new();
+ opts.method("GET");
+ 
+ let request = Request::new_with_str_and_init(url, &opts)?;
+ 
+ let window = web_sys::window().unwrap();
+ let resp_value = JsFuture::from(window.fetch_with_request(&request)).await?;
+ let resp: Response = resp_value.dyn_into()?;
+ 
+ let json = JsFuture::from(resp.json()?).await?;
+ Ok(json)
 }
 ```
 
@@ -278,11 +278,10 @@ pub async fn fetch_data(url: &str) -> Result<JsValue, JsValue> {
 ### 7.1 Optimize Size
 
 ```toml
-# Cargo.toml
-[profile.release]
 opt-level = "z"
 lto = true
 codegen-units = 1
+panic = "abort" # ลดขนาดได้เยอะมาก! (แต่ debug ยากขึ้น)
 ```
 
 ### 7.2 Use wee_alloc
@@ -309,7 +308,7 @@ wasm_bindgen_test_configure!(run_in_browser);
 
 #[wasm_bindgen_test]
 fn test_greet() {
-    assert_eq!(greet("World"), "Hello, World!");
+ assert_eq!(greet("World"), "Hello, World!");
 }
 ```
 

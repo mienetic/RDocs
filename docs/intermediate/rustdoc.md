@@ -1,6 +1,6 @@
 # rustdoc - Documentation
 
-สร้าง Documentation สวยๆ ด้วย rustdoc! 📚
+สร้าง Documentation สวยๆ ด้วย rustdoc! 
 
 :::tip rustdoc เป็น built-in!
 Rust มี documentation generator ในตัว - สร้าง docs สวยๆ จาก comments อัตโนมัติ!
@@ -30,12 +30,12 @@ cargo doc --no-deps
 
 ```
 target/doc/
-├── your_crate/
-│   ├── index.html
-│   ├── struct.YourStruct.html
-│   ├── fn.your_function.html
-│   └── ...
-└── ...
+ your_crate/
+ index.html
+ struct.YourStruct.html
+ fn.your_function.html
+ ...
+ ...
 ```
 
 ---
@@ -65,9 +65,15 @@ target/doc/
 
 /// Greets someone by name.
 pub fn greet(name: &str) {
-    println!("Hello, {}!", name);
+ println!("Hello, {}!", name);
 }
 ```
+
+::: best-practice
+**`///` vs `//`**
+*   ใช้ `///` (Doc Comment) สำหรับ **Public API** เท่านั้น เพื่อให้ผู้ใช้งานเห็นใน Documentation
+*   ใช้ `//` (Line Comment) สำหรับ **Internal Logic** หรือคำอธิบายโค้ดที่ซับซ้อนภายใน function เพื่อให้ Developer ด้วยกันอ่าน
+:::
 
 ### 2.2 Function Documentation
 
@@ -95,7 +101,7 @@ pub fn greet(name: &str) {
 /// assert_eq!(factorial(0), 1);
 /// ```
 pub fn factorial(n: u32) -> u64 {
-    (1..=n as u64).product()
+ (1..=n as u64).product()
 }
 ```
 
@@ -114,22 +120,22 @@ pub fn factorial(n: u32) -> u64 {
 /// ```
 #[derive(Debug, Clone, Copy)]
 pub struct Point {
-    /// X coordinate
-    pub x: f64,
-    /// Y coordinate
-    pub y: f64,
+ /// X coordinate
+ pub x: f64,
+ /// Y coordinate
+ pub y: f64,
 }
 
 impl Point {
-    /// Creates a new point.
-    pub fn new(x: f64, y: f64) -> Self {
-        Point { x, y }
-    }
-    
-    /// Calculates distance from origin.
-    pub fn distance_from_origin(&self) -> f64 {
-        (self.x.powi(2) + self.y.powi(2)).sqrt()
-    }
+ /// Creates a new point.
+ pub fn new(x: f64, y: f64) -> Self {
+ Point { x, y }
+ }
+ 
+ /// Calculates distance from origin.
+ pub fn distance_from_origin(&self) -> f64 {
+ (self.x.powi(2) + self.y.powi(2)).sqrt()
+ }
 }
 ```
 
@@ -155,7 +161,7 @@ impl Point {
 /// assert_eq!(result, 0);
 /// ```
 pub fn add(a: i32, b: i32) -> i32 {
-    a + b
+ a + b
 }
 ```
 
@@ -226,8 +232,8 @@ pub fn other_function() {}
 pub struct MyStruct;
 
 impl MyStruct {
-    /// Method referenced by [`my_function`].
-    pub fn method(&self) {}
+ /// Method referenced by [`my_function`].
+ pub fn method(&self) {}
 }
 ```
 
@@ -330,7 +336,7 @@ pub use utils::helper;
 ```rust
 /// Public API
 pub fn public_api() {
-    internal_helper();
+ internal_helper();
 }
 
 /// Not shown in public docs

@@ -18,9 +18,9 @@ cd hello_rust
 
 ```
 hello_rust/
-├── Cargo.toml    # ไฟล์ config ของ project
-└── src/
-    └── main.rs   # โค้ดหลักของเรา
+ Cargo.toml # ไฟล์ config ของ project
+ src/
+ main.rs # โค้ดหลักของเรา
 ```
 
 ## โครงสร้างไฟล์
@@ -31,9 +31,9 @@ hello_rust/
 
 ```toml
 [package]
-name = "hello_rust"        # ชื่อ project
-version = "0.1.0"          # เวอร์ชัน
-edition = "2024"           # Rust edition ที่ใช้
+name = "hello_rust" # ชื่อ project
+version = "0.1.0" # เวอร์ชัน
+edition = "2024" # Rust edition ที่ใช้
 
 [dependencies]
 # dependencies จะถูกเพิ่มที่นี่
@@ -52,7 +52,7 @@ TOML (Tom's Obvious Minimal Language) เป็นรูปแบบไฟล์
 
 ```rust
 fn main() {
-    println!("Hello, world!");
+ println!("Hello, world!");
 }
 ```
 
@@ -68,9 +68,9 @@ fn main() {
 // fn = function (ฟังก์ชัน)
 // main = ชื่อฟังก์ชัน (ฟังก์ชันหลักที่โปรแกรมเริ่มทำงาน)
 fn main() {
-    // println! = macro สำหรับพิมพ์ข้อความ
-    // ! หมายความว่านี่คือ macro ไม่ใช่ฟังก์ชันธรรมดา
-    println!("Hello, world!");
+ // println! = macro สำหรับพิมพ์ข้อความ
+ // ! หมายความว่านี่คือ macro ไม่ใช่ฟังก์ชันธรรมดา
+ println!("Hello, world!");
 }
 ```
 
@@ -94,9 +94,9 @@ fn main() {
 cargo run
 
 # ผลลัพธ์:
-#    Compiling hello_rust v0.1.0 (/path/to/hello_rust)
-#     Finished dev [unoptimized + debuginfo] target(s) in 0.50s
-#      Running `target/debug/hello_rust`
+# Compiling hello_rust v0.1.0 (/path/to/hello_rust)
+# Finished dev [unoptimized + debuginfo] target(s) in 0.50s
+# Running `target/debug/hello_rust`
 # Hello, world!
 ```
 
@@ -114,18 +114,18 @@ cargo run
 
 ```rust
 fn main() {
-    // ทักทายเป็นภาษาไทย!
-    println!("สวัสดีชาว Rust!");
-    
-    // พิมพ์หลายบรรทัด
-    println!("ยินดีต้อนรับสู่การเขียนโปรแกรมภาษา Rust");
-    println!("ภาษาที่เร็วและปลอดภัยที่สุดในโลก!");
-    
-    // พิมพ์ตัวเลข
-    println!("1 + 1 = {}", 1 + 1);
-    
-    // พิมพ์หลายค่า
-    println!("{} + {} = {}", 2, 3, 2 + 3);
+ // ทักทายเป็นภาษาไทย!
+ println!("สวัสดีชาว Rust!");
+ 
+ // พิมพ์หลายบรรทัด
+ println!("ยินดีต้อนรับสู่การเขียนโปรแกรมภาษา Rust");
+ println!("ภาษาที่เร็วและปลอดภัยที่สุดในโลก!");
+ 
+ // พิมพ์ตัวเลข
+ println!("1 + 1 = {}", 1 + 1);
+ 
+ // พิมพ์หลายค่า
+ println!("{} + {} = {}", 2, 3, 2 + 3);
 }
 ```
 
@@ -141,27 +141,27 @@ fn main() {
 
 ```rust
 fn main() {
-    // แบบธรรมดา
-    println!("Hello!");
-    
-    // ใส่ค่าด้วย {}
-    let name = "Ferris";
-    println!("Hello, {}!", name);
-    
-    // หลายค่า
-    println!("{} loves {}!", "I", "Rust");
-    
-    // ระบุลำดับ
-    println!("{1} {0}!", "World", "Hello");
-    
-    // ตั้งชื่อ
-    println!("{language} is {feeling}!", language="Rust", feeling="awesome");
-    
-    // Debug format (แสดงค่าแบบ debug)
-    println!("{:?}", [1, 2, 3]);
-    
-    // Pretty debug (อ่านง่ายกว่า)
-    println!("{:#?}", [1, 2, 3]);
+ // แบบธรรมดา
+ println!("Hello!");
+ 
+ // ใส่ค่าด้วย {}
+ let name = "Ferris";
+ println!("Hello, {}!", name);
+ 
+ // หลายค่า
+ println!("{} loves {}!", "I", "Rust");
+ 
+ // ระบุลำดับ
+ println!("{1} {0}!", "World", "Hello");
+ 
+ // ตั้งชื่อ
+ println!("{language} is {feeling}!", language="Rust", feeling="awesome");
+ 
+ // Debug format (แสดงค่าแบบ debug)
+ println!("{:?}", [1, 2, 3]);
+ 
+ // Pretty debug (อ่านง่ายกว่า)
+ println!("{:#?}", [1, 2, 3]);
 }
 ```
 
@@ -175,13 +175,13 @@ fn main() {
 
 ```rust
 fn main() {
-    let num = 42;
-    
-    println!("Decimal (ฐาน 10):  {}", num);
-    println!("Binary (ฐาน 2):    {:b}", num);   // 101010
-    println!("Octal (ฐาน 8):     {:o}", num);   // 52
-    println!("Hex lower (ฐาน 16): {:x}", num);  // 2a
-    println!("Hex upper (ฐาน 16): {:X}", num);  // 2A
+ let num = 42;
+ 
+ println!("Decimal (ฐาน 10): {}", num);
+ println!("Binary (ฐาน 2): {:b}", num); // 101010
+ println!("Octal (ฐาน 8): {:o}", num); // 52
+ println!("Hex lower (ฐาน 16): {:x}", num); // 2a
+ println!("Hex upper (ฐาน 16): {:X}", num); // 2A
 }
 ```
 
@@ -193,15 +193,15 @@ fn main() {
 
 ```rust
 fn main() {
-    let pi = 3.14159265359;
-    
-    println!("Default:     {}", pi);      // 3.14159265359
-    println!("2 decimals:  {:.2}", pi);   // 3.14
-    println!("5 decimals:  {:.5}", pi);   // 3.14159
-    println!("0 decimals:  {:.0}", pi);   // 3
-    
-    // Width + precision
-    println!("Width 10:    {:10.2}", pi); //       3.14
+ let pi = 3.14159265359;
+ 
+ println!("Default: {}", pi); // 3.14159265359
+ println!("2 decimals: {:.2}", pi); // 3.14
+ println!("5 decimals: {:.5}", pi); // 3.14159
+ println!("0 decimals: {:.0}", pi); // 3
+ 
+ // Width + precision
+ println!("Width 10: {:10.2}", pi); // 3.14
 }
 ```
 
@@ -213,19 +213,19 @@ fn main() {
 
 ```rust
 fn main() {
-    // Padding ด้วย 0
-    println!("Pad zeros: {:05}", 42);     // 00042
-    println!("Pad zeros: {:08}", 255);    // 00000255
-    
-    // Alignment
-    let text = "Rust";
-    println!("Right align: {:>10}", text);  //       Rust
-    println!("Left align:  {:<10}", text);  // Rust      
-    println!("Center:      {:^10}", text);  //    Rust   
-    
-    // Custom fill character
-    println!("Fill dash:   {:->10}", text); // ------Rust
-    println!("Fill star:   {:*<10}", text); // Rust******
+ // Padding ด้วย 0
+ println!("Pad zeros: {:05}", 42); // 00042
+ println!("Pad zeros: {:08}", 255); // 00000255
+ 
+ // Alignment
+ let text = "Rust";
+ println!("Right align: {:>10}", text); // Rust
+ println!("Left align: {:<10}", text); // Rust 
+ println!("Center: {:^10}", text); // Rust 
+ 
+ // Custom fill character
+ println!("Fill dash: {:->10}", text); // ------Rust
+ println!("Fill star: {:*<10}", text); // Rust******
 }
 ```
 
@@ -237,15 +237,15 @@ fn main() {
 
 ```rust
 fn main() {
-    let numbers = vec![1, 2, 3, 4, 5];
-    let person = ("Alice", 30, true);
-    
-    // {:?} = Debug format
-    println!("Debug: {:?}", numbers);
-    println!("Debug: {:?}", person);
-    
-    // {:#?} = Pretty Debug (อ่านง่ายกว่า)
-    println!("Pretty:\n{:#?}", numbers);
+ let numbers = vec![1, 2, 3, 4, 5];
+ let person = ("Alice", 30, true);
+ 
+ // {:?} = Debug format
+ println!("Debug: {:?}", numbers);
+ println!("Debug: {:?}", person);
+ 
+ // {:#?} = Pretty Debug (อ่านง่ายกว่า)
+ println!("Pretty:\n{:#?}", numbers);
 }
 ```
 
@@ -263,9 +263,9 @@ fn main() {
 | `{:X}` | Hex uppercase | `2A` |
 | `{:.2}` | 2 decimal places | `3.14` |
 | `{:05}` | Pad with zeros | `00042` |
-| `{:>10}` | Right align | `     text` |
-| `{:<10}` | Left align | `text     ` |
-| `{:^10}` | Center | `  text   ` |
+| `{:>10}` | Right align | ` text` |
+| `{:<10}` | Left align | `text ` |
+| `{:^10}` | Center | ` text ` |
 
 ### เปรียบเทียบ Print กับภาษาอื่น
 
@@ -282,12 +282,12 @@ fn main() {
 
 ```rust
 fn main() {
-    // print! ไม่ขึ้นบรรทัดใหม่
-    print!("Hello ");
-    print!("World");
-    println!("!"); // ขึ้นบรรทัดใหม่ตรงนี้
-    
-    // ผลลัพธ์: Hello World!
+ // print! ไม่ขึ้นบรรทัดใหม่
+ print!("Hello ");
+ print!("World");
+ println!("!"); // ขึ้นบรรทัดใหม่ตรงนี้
+ 
+ // ผลลัพธ์: Hello World!
 }
 ```
 
@@ -299,16 +299,16 @@ fn main() {
 
 ```rust
 fn main() {
-    // นี่คือ single-line comment
-    // ใช้ // นำหน้า
-    
-    /*
-        นี่คือ multi-line comment
-        ใช้ได้หลายบรรทัด
-        เหมาะกับอธิบายยาวๆ
-    */
-    
-    println!("Comments ไม่ถูกรัน!");
+ // นี่คือ single-line comment
+ // ใช้ // นำหน้า
+ 
+ /*
+ นี่คือ multi-line comment
+ ใช้ได้หลายบรรทัด
+ เหมาะกับอธิบายยาวๆ
+ */
+ 
+ println!("Comments ไม่ถูกรัน!");
 }
 
 /// นี่คือ documentation comment
@@ -341,8 +341,8 @@ Rust Compiler มี error message ที่ดีมาก ลองทำใ�
 
 ```rust
 fn main() {
-    // ลืมใส่ ;
-    println!("Hello")
+ // ลืมใส่ ;
+ println!("Hello")
 }
 ```
 
@@ -351,9 +351,9 @@ Compiler จะบอก:
 ```
 error: expected `;`, found `}`
  --> src/main.rs:3:23
-  |
-3 |     println!("Hello")
-  |                       ^ help: add `;` here
+ |
+3 | println!("Hello")
+ | ^ help: add `;` here
 ```
 
 :::info Rust Compiler เป็นเพื่อน!

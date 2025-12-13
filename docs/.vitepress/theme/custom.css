@@ -1,4 +1,4 @@
-/* 🦀 Rust Thai Docs - Custom Theme */
+/* Rust Thai Docs - Custom Theme */
 
 /* ============================================
    Google Fonts Import
@@ -338,4 +338,94 @@
 
 .VPBadge.danger {
   background: #EF4444;
+}
+
+/* ============================================
+   Code Tooltip Styles
+   ============================================ */
+/* Spans with tooltip should receive mouse events */
+[data-rust-type] {
+  cursor: pointer !important;
+  pointer-events: auto !important;
+  position: relative;
+  z-index: 1;
+}
+
+[data-rust-type]:hover {
+  background-color: var(--vp-c-brand-soft) !important;
+  border-radius: 3px;
+}
+
+/* Ensure code blocks don't block pointer events */
+pre.shiki span,
+pre.vp-code span,
+div[class*="language-"] span {
+  pointer-events: auto;
+}
+
+/* Tooltip container styles (backup) */
+.rust-type-tooltip {
+  font-family: var(--vp-font-family-base);
+}
+
+.rust-type-tooltip a {
+  color: var(--vp-c-brand-1);
+}
+
+.rust-type-tooltip a:hover {
+  color: var(--vp-c-brand-2);
+}
+
+/* ============================================
+   Custom Admonition Styles
+   ============================================ */
+
+/* Best Practice - Green (Premium) */
+.vp-doc .custom-block.best-practice {
+  border-color: #10B981;
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(16, 185, 129, 0.05) 100%);
+}
+
+.vp-doc .custom-block.best-practice .custom-block-title {
+  color: #10B981;
+}
+
+/* Observation - Blue (Premium) */
+.vp-doc .custom-block.observation {
+  border-color: #3B82F6;
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(59, 130, 246, 0.05) 100%);
+}
+
+.vp-doc .custom-block.observation .custom-block-title {
+  color: #3B82F6;
+}
+
+/* Caution - Yellow/Orange (Premium) */
+.vp-doc .custom-block.caution {
+  border-color: #F59E0B;
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.1) 0%, rgba(245, 158, 11, 0.05) 100%);
+}
+
+.vp-doc .custom-block.caution .custom-block-title {
+  color: #F59E0B;
+}
+
+/* Recommendation - Teal (Premium) */
+.vp-doc .custom-block.recommendation {
+  border-color: #14B8A6;
+  background: linear-gradient(135deg, rgba(20, 184, 166, 0.1) 0%, rgba(20, 184, 166, 0.05) 100%);
+}
+
+.vp-doc .custom-block.recommendation .custom-block-title {
+  color: #14B8A6;
+}
+
+/* Pitfall - Red (Premium) */
+.vp-doc .custom-block.pitfall {
+  border-color: #EF4444;
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.15) 0%, rgba(239, 68, 68, 0.05) 100%);
+}
+
+.vp-doc .custom-block.pitfall .custom-block-title {
+  color: #EF4444;
 }

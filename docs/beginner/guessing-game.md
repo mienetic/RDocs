@@ -1,6 +1,6 @@
 # Guessing Game
 
-มาสร้างเกมทายตัวเลขกัน! 🎮
+มาสร้างเกมทายตัวเลขกัน! 
 
 โปรเจกต์นี้จะช่วยให้คุณเข้าใจ:
 - รับ input จากผู้ใช้
@@ -44,30 +44,30 @@ use std::io;
 use std::cmp::Ordering;
 
 fn main() {
-    println!("=== เกมทายตัวเลข ===");
-    
-    // สร้างตัวเลขสุ่ม 1-100
-    // ใน Playground ใช้ค่าคงที่แทน
-    let secret_number = 42;  // rand::thread_rng().gen_range(1..=100);
-    
-    println!("ผมคิดตัวเลข 1-100 ไว้แล้ว");
-    println!("(Hint: คำตอบคือ 42 สำหรับ demo นี้)");
-    
-    // Demo: ทาย 50 ก่อน
-    let guesses = [50, 25, 42];
-    
-    for guess in guesses {
-        println!("\nคุณทาย: {}", guess);
-        
-        match guess.cmp(&secret_number) {
-            Ordering::Less => println!("น้อยไป! ↑"),
-            Ordering::Greater => println!("มากไป! ↓"),
-            Ordering::Equal => {
-                println!("🎉 ถูกต้อง! คุณชนะแล้ว!");
-                break;
-            }
-        }
-    }
+ println!("=== เกมทายตัวเลข ===");
+ 
+ // สร้างตัวเลขสุ่ม 1-100
+ // ใน Playground ใช้ค่าคงที่แทน
+ let secret_number = 42; // rand::thread_rng().gen_range(1..=100);
+ 
+ println!("ผมคิดตัวเลข 1-100 ไว้แล้ว");
+ println!("(Hint: คำตอบคือ 42 สำหรับ demo นี้)");
+ 
+ // Demo: ทาย 50 ก่อน
+ let guesses = [50, 25, 42];
+ 
+ for guess in guesses {
+ println!("\nคุณทาย: {}", guess);
+ 
+ match guess.cmp(&secret_number) {
+ Ordering::Less => println!("น้อยไป! ↑"),
+ Ordering::Greater => println!("มากไป! ↓"),
+ Ordering::Equal => {
+ println!(" ถูกต้อง! คุณชนะแล้ว!");
+ break;
+ }
+ }
+ }
 }
 ```
 
@@ -83,43 +83,43 @@ use std::cmp::Ordering;
 use rand::Rng;
 
 fn main() {
-    println!("=== เกมทายตัวเลข ===");
-    
-    // สร้างตัวเลขสุ่ม 1-100
-    let secret_number = rand::thread_rng().gen_range(1..=100);
-    
-    println!("ผมคิดตัวเลข 1-100 ไว้แล้ว ลองทายดู!");
-    
-    loop {
-        println!("\nใส่ตัวเลขที่ทาย:");
-        
-        // รับ input
-        let mut guess = String::new();
-        io::stdin()
-            .read_line(&mut guess)
-            .expect("Failed to read line");
-        
-        // แปลงเป็นตัวเลข (handle error)
-        let guess: u32 = match guess.trim().parse() {
-            Ok(num) => num,
-            Err(_) => {
-                println!("❌ กรุณาใส่ตัวเลข!");
-                continue;
-            }
-        };
-        
-        println!("คุณทาย: {}", guess);
-        
-        // เปรียบเทียบ
-        match guess.cmp(&secret_number) {
-            Ordering::Less => println!("น้อยไป! ↑"),
-            Ordering::Greater => println!("มากไป! ↓"),
-            Ordering::Equal => {
-                println!("🎉 ถูกต้อง! คุณชนะแล้ว!");
-                break;
-            }
-        }
-    }
+ println!("=== เกมทายตัวเลข ===");
+ 
+ // สร้างตัวเลขสุ่ม 1-100
+ let secret_number = rand::thread_rng().gen_range(1..=100);
+ 
+ println!("ผมคิดตัวเลข 1-100 ไว้แล้ว ลองทายดู!");
+ 
+ loop {
+ println!("\nใส่ตัวเลขที่ทาย:");
+ 
+ // รับ input
+ let mut guess = String::new();
+ io::stdin()
+ .read_line(&mut guess)
+ .expect("Failed to read line");
+ 
+ // แปลงเป็นตัวเลข (handle error)
+ let guess: u32 = match guess.trim().parse() {
+ Ok(num) => num,
+ Err(_) => {
+ println!("กรุณาใส่ตัวเลข!");
+ continue;
+ }
+ };
+ 
+ println!("คุณทาย: {}", guess);
+ 
+ // เปรียบเทียบ
+ match guess.cmp(&secret_number) {
+ Ordering::Less => println!("น้อยไป! ↑"),
+ Ordering::Greater => println!("มากไป! ↓"),
+ Ordering::Equal => {
+ println!(" ถูกต้อง! คุณชนะแล้ว!");
+ break;
+ }
+ }
+ }
 }
 ```
 
@@ -132,8 +132,8 @@ fn main() {
 ```rust
 let mut guess = String::new();
 io::stdin()
-    .read_line(&mut guess)
-    .expect("Failed to read line");
+ .read_line(&mut guess)
+ .expect("Failed to read line");
 ```
 
 | Part | Description |
@@ -147,8 +147,8 @@ io::stdin()
 
 ```rust
 let guess: u32 = match guess.trim().parse() {
-    Ok(num) => num,
-    Err(_) => continue,
+ Ok(num) => num,
+ Err(_) => continue,
 };
 ```
 
@@ -163,12 +163,12 @@ let guess: u32 = match guess.trim().parse() {
 
 ```rust
 match guess.cmp(&secret_number) {
-    Ordering::Less => println!("น้อยไป!"),
-    Ordering::Greater => println!("มากไป!"),
-    Ordering::Equal => {
-        println!("ถูกต้อง!");
-        break;
-    }
+ Ordering::Less => println!("น้อยไป!"),
+ Ordering::Greater => println!("มากไป!"),
+ Ordering::Equal => {
+ println!("ถูกต้อง!");
+ break;
+ }
 }
 ```
 
@@ -188,13 +188,13 @@ match guess.cmp(&secret_number) {
 let mut attempts = 0;
 
 loop {
-    attempts += 1;
-    // ... game logic ...
-    
-    if guess == secret_number {
-        println!("คุณทาย {} ครั้ง", attempts);
-        break;
-    }
+ attempts += 1;
+ // ... game logic ...
+ 
+ if guess == secret_number {
+ println!("คุณทาย {} ครั้ง", attempts);
+ break;
+ }
 }
 ```
 
@@ -205,15 +205,15 @@ const MAX_ATTEMPTS: u32 = 7;
 let mut attempts = 0;
 
 loop {
-    attempts += 1;
-    
-    if attempts > MAX_ATTEMPTS {
-        println!("หมดโอกาส! คำตอบคือ {}", secret_number);
-        break;
-    }
-    
-    println!("ครั้งที่ {}/{}", attempts, MAX_ATTEMPTS);
-    // ... game logic ...
+ attempts += 1;
+ 
+ if attempts > MAX_ATTEMPTS {
+ println!("หมดโอกาส! คำตอบคือ {}", secret_number);
+ break;
+ }
+ 
+ println!("ครั้งที่ {}/{}", attempts, MAX_ATTEMPTS);
+ // ... game logic ...
 }
 ```
 
@@ -221,22 +221,22 @@ loop {
 
 ```rust
 fn main() {
-    loop {
-        play_game();
-        
-        println!("\nเล่นอีกครั้ง? (y/n)");
-        let mut answer = String::new();
-        io::stdin().read_line(&mut answer).unwrap();
-        
-        if answer.trim().to_lowercase() != "y" {
-            println!("ขอบคุณที่เล่น! 👋");
-            break;
-        }
-    }
+ loop {
+ play_game();
+ 
+ println!("\nเล่นอีกครั้ง? (y/n)");
+ let mut answer = String::new();
+ io::stdin().read_line(&mut answer).unwrap();
+ 
+ if answer.trim().to_lowercase() != "y" {
+ println!("ขอบคุณที่เล่น! ");
+ break;
+ }
+ }
 }
 
 fn play_game() {
-    // ... game code ...
+ // ... game code ...
 }
 ```
 
@@ -265,7 +265,7 @@ cargo run
 ใส่ตัวเลขที่ทาย:
 37
 คุณทาย: 37
-🎉 ถูกต้อง! คุณชนะแล้ว!
+ ถูกต้อง! คุณชนะแล้ว!
 ```
 
 ---

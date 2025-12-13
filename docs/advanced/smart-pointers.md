@@ -28,21 +28,21 @@ Pointer คือตัวแปรที่เก็บ memory address ขอ�
 
 ```rust
 fn main() {
-    // ค่าปกติอยู่บน stack
-    let x = 5;
-    println!("x on stack: {}", x);
-    
-    // Box เก็บค่าบน heap
-    let boxed = Box::new(5);
-    println!("boxed on heap: {}", boxed);
-    
-    // Dereference เพื่อเข้าถึงค่า
-    let y = *boxed + 10;
-    println!("dereferenced + 10: {}", y);
-    
-    // Box ใช้กับข้อมูลขนาดใหญ่
-    let big_array = Box::new([0u8; 1000]);
-    println!("big array length: {}", big_array.len());
+ // ค่าปกติอยู่บน stack
+ let x = 5;
+ println!("x on stack: {}", x);
+ 
+ // Box เก็บค่าบน heap
+ let boxed = Box::new(5);
+ println!("boxed on heap: {}", boxed);
+ 
+ // Dereference เพื่อเข้าถึงค่า
+ let y = *boxed + 10;
+ println!("dereferenced + 10: {}", y);
+ 
+ // Box ใช้กับข้อมูลขนาดใหญ่
+ let big_array = Box::new([0u8; 1000]);
+ println!("big array length: {}", big_array.len());
 }
 ```
 
@@ -56,33 +56,33 @@ fn main() {
 // Linked List ต้องใช้ Box เพราะ recursive
 #[derive(Debug)]
 enum List {
-    Cons(i32, Box<List>),  // Box ทำให้ขนาดคงที่
-    Nil,
+ Cons(i32, Box<List>), // Box ทำให้ขนาดคงที่
+ Nil,
 }
 
 use List::{Cons, Nil};
 
 fn main() {
-    // สร้าง list: 1 -> 2 -> 3 -> Nil
-    let list = Cons(1, 
-        Box::new(Cons(2, 
-            Box::new(Cons(3, 
-                Box::new(Nil))))));
-    
-    println!("{:?}", list);
-    
-    // วน iterate
-    print_list(&list);
+ // สร้าง list: 1 -> 2 -> 3 -> Nil
+ let list = Cons(1, 
+ Box::new(Cons(2, 
+ Box::new(Cons(3, 
+ Box::new(Nil))))));
+ 
+ println!("{:?}", list);
+ 
+ // วน iterate
+ print_list(&list);
 }
 
 fn print_list(list: &List) {
-    match list {
-        Cons(value, next) => {
-            println!("Value: {}", value);
-            print_list(next);
-        }
-        Nil => println!("End of list"),
-    }
+ match list {
+ Cons(value, next) => {
+ println!("Value: {}", value);
+ print_list(next);
+ }
+ Nil => println!("End of list"),
+ }
 }
 ```
 
@@ -98,26 +98,26 @@ fn print_list(list: &List) {
 use std::rc::Rc;
 
 fn main() {
-    // สร้าง Rc
-    let a = Rc::new(String::from("hello"));
-    println!("count after a: {}", Rc::strong_count(&a));
-    
-    // Clone เพิ่ม reference count (ไม่ได้ copy ข้อมูล!)
-    let b = Rc::clone(&a);
-    println!("count after b: {}", Rc::strong_count(&a));
-    
-    let c = Rc::clone(&a);
-    println!("count after c: {}", Rc::strong_count(&a));
-    
-    // ทุกตัวชี้ไปที่ข้อมูลเดียวกัน
-    println!("a = {}, b = {}, c = {}", a, b, c);
-    
-    // เมื่อ variable ออกจาก scope, count ลด
-    {
-        let d = Rc::clone(&a);
-        println!("count in scope: {}", Rc::strong_count(&a));
-    }
-    println!("count after scope: {}", Rc::strong_count(&a));
+ // สร้าง Rc
+ let a = Rc::new(String::from("hello"));
+ println!("count after a: {}", Rc::strong_count(&a));
+ 
+ // Clone เพิ่ม reference count (ไม่ได้ copy ข้อมูล!)
+ let b = Rc::clone(&a);
+ println!("count after b: {}", Rc::strong_count(&a));
+ 
+ let c = Rc::clone(&a);
+ println!("count after c: {}", Rc::strong_count(&a));
+ 
+ // ทุกตัวชี้ไปที่ข้อมูลเดียวกัน
+ println!("a = {}, b = {}, c = {}", a, b, c);
+ 
+ // เมื่อ variable ออกจาก scope, count ลด
+ {
+ let d = Rc::clone(&a);
+ println!("count in scope: {}", Rc::strong_count(&a));
+ }
+ println!("count after scope: {}", Rc::strong_count(&a));
 }
 ```
 
@@ -133,31 +133,31 @@ use std::rc::Rc;
 // ใช้ Rc เมื่อหลาย parts ของ program ต้องการอ่านข้อมูลเดียวกัน
 #[derive(Debug)]
 struct Node {
-    value: i32,
-    // parent อาจมีหลาย children ที่ reference
-    children: Vec<Rc<Node>>,
+ value: i32,
+ // parent อาจมีหลาย children ที่ reference
+ children: Vec<Rc<Node>>,
 }
 
 fn main() {
-    let leaf = Rc::new(Node {
-        value: 10,
-        children: vec![],
-    });
-    
-    // หลาย nodes share leaf เดียวกัน
-    let branch1 = Rc::new(Node {
-        value: 5,
-        children: vec![Rc::clone(&leaf)],
-    });
-    
-    let branch2 = Rc::new(Node {
-        value: 7,
-        children: vec![Rc::clone(&leaf)],
-    });
-    
-    println!("leaf count: {}", Rc::strong_count(&leaf)); // 3
-    println!("branch1: {:?}", branch1);
-    println!("branch2: {:?}", branch2);
+ let leaf = Rc::new(Node {
+ value: 10,
+ children: vec![],
+ });
+ 
+ // หลาย nodes share leaf เดียวกัน
+ let branch1 = Rc::new(Node {
+ value: 5,
+ children: vec![Rc::clone(&leaf)],
+ });
+ 
+ let branch2 = Rc::new(Node {
+ value: 7,
+ children: vec![Rc::clone(&leaf)],
+ });
+ 
+ println!("leaf count: {}", Rc::strong_count(&leaf)); // 3
+ println!("branch1: {:?}", branch1);
+ println!("branch2: {:?}", branch2);
 }
 ```
 
@@ -177,23 +177,23 @@ fn main() {
 use std::cell::RefCell;
 
 fn main() {
-    // RefCell ให้ borrow rules ตอน runtime แทน compile-time
-    let data = RefCell::new(5);
-    
-    // borrow() = immutable borrow
-    println!("Before: {}", data.borrow());
-    
-    // borrow_mut() = mutable borrow
-    *data.borrow_mut() += 10;
-    
-    println!("After: {}", data.borrow());
-    
-    // หลาย immutable borrows ได้
-    {
-        let r1 = data.borrow();
-        let r2 = data.borrow();
-        println!("r1 = {}, r2 = {}", r1, r2);
-    }
+ // RefCell ให้ borrow rules ตอน runtime แทน compile-time
+ let data = RefCell::new(5);
+ 
+ // borrow() = immutable borrow
+ println!("Before: {}", data.borrow());
+ 
+ // borrow_mut() = mutable borrow
+ *data.borrow_mut() += 10;
+ 
+ println!("After: {}", data.borrow());
+ 
+ // หลาย immutable borrows ได้
+ {
+ let r1 = data.borrow();
+ let r2 = data.borrow();
+ println!("r1 = {}, r2 = {}", r1, r2);
+ }
 }
 ```
 
@@ -206,7 +206,7 @@ RefCell ตรวจสอบ borrow rules ตอน runtime
 ```rust
 let data = RefCell::new(5);
 let r1 = data.borrow();
-let r2 = data.borrow_mut();  // PANIC! already borrowed
+let r2 = data.borrow_mut(); // PANIC! already borrowed
 ```
 :::
 
@@ -219,25 +219,32 @@ use std::cell::RefCell;
 use std::rc::Rc;
 
 fn main() {
-    // Rc กับ RefCell = หลาย owner + แก้ไขได้
-    let shared = Rc::new(RefCell::new(vec![1, 2, 3]));
-    
-    // Clone references
-    let a = Rc::clone(&shared);
-    let b = Rc::clone(&shared);
-    let c = Rc::clone(&shared);
-    
-    // ทุกคนแก้ไขได้
-    a.borrow_mut().push(4);
-    b.borrow_mut().push(5);
-    c.borrow_mut().push(6);
-    
-    println!("shared: {:?}", shared.borrow());
-    // [1, 2, 3, 4, 5, 6]
+ // Rc กับ RefCell = หลาย owner + แก้ไขได้
+ let shared = Rc::new(RefCell::new(vec![1, 2, 3]));
+ 
+ // Clone references
+ let a = Rc::clone(&shared);
+ let b = Rc::clone(&shared);
+ let c = Rc::clone(&shared);
+ 
+ // ทุกคนแก้ไขได้
+ a.borrow_mut().push(4);
+ b.borrow_mut().push(5);
+ c.borrow_mut().push(6);
+ 
+ println!("shared: {:?}", shared.borrow());
+ // [1, 2, 3, 4, 5, 6]
 }
 ```
 
 </RustPlayground>
+
+::: pitfall
+**ระวัง Reference Cycles!**
+ถ้าคุณใช้ `Rc` และ `RefCell` ชี้หากันเองเป็นวงกลม (A -> B -> A)
+Reference Count จะไม่มีวันเป็น 0 และ memory จะ **ไม่ถูก free (Memory Leak)**
+ถ้าต้องทำ Circular Reference ให้ใช้ **`Weak<T>`** ช่วย
+:::
 
 ## Cell - Copy Types
 
@@ -249,24 +256,24 @@ fn main() {
 use std::cell::Cell;
 
 fn main() {
-    let counter = Cell::new(0);
-    
-    // get() และ set() ไม่ต้อง borrow
-    println!("Initial: {}", counter.get());
-    
-    counter.set(10);
-    println!("After set: {}", counter.get());
-    
-    // ใช้ใน struct ที่ต้องการ interior mutability
-    let point = Point { x: Cell::new(0), y: Cell::new(0) };
-    point.x.set(10);
-    point.y.set(20);
-    println!("Point: ({}, {})", point.x.get(), point.y.get());
+ let counter = Cell::new(0);
+ 
+ // get() และ set() ไม่ต้อง borrow
+ println!("Initial: {}", counter.get());
+ 
+ counter.set(10);
+ println!("After set: {}", counter.get());
+ 
+ // ใช้ใน struct ที่ต้องการ interior mutability
+ let point = Point { x: Cell::new(0), y: Cell::new(0) };
+ point.x.set(10);
+ point.y.set(20);
+ println!("Point: ({}, {})", point.x.get(), point.y.get());
 }
 
 struct Point {
-    x: Cell<i32>,
-    y: Cell<i32>,
+ x: Cell<i32>,
+ y: Cell<i32>,
 }
 ```
 
@@ -294,32 +301,32 @@ use std::ops::Deref;
 struct MyBox<T>(T);
 
 impl<T> MyBox<T> {
-    fn new(x: T) -> MyBox<T> {
-        MyBox(x)
-    }
+ fn new(x: T) -> MyBox<T> {
+ MyBox(x)
+ }
 }
 
 // Deref ให้ใช้ * กับ custom type ได้
 impl<T> Deref for MyBox<T> {
-    type Target = T;
-    
-    fn deref(&self) -> &T {
-        &self.0
-    }
+ type Target = T;
+ 
+ fn deref(&self) -> &T {
+ &self.0
+ }
 }
 
 // Drop ทำงานตอน value ออกจาก scope
 impl<T> Drop for MyBox<T> {
-    fn drop(&mut self) {
-        println!("Dropping MyBox!");
-    }
+ fn drop(&mut self) {
+ println!("Dropping MyBox!");
+ }
 }
 
 fn main() {
-    let x = MyBox::new(5);
-    println!("Value: {}", *x);  // ใช้ Deref
-    
-    // x ออกจาก scope ที่นี่, Drop ถูกเรียก
+ let x = MyBox::new(5);
+ println!("Value: {}", *x); // ใช้ Deref
+ 
+ // x ออกจาก scope ที่นี่, Drop ถูกเรียก
 }
 ```
 
@@ -328,18 +335,18 @@ fn main() {
 ## Memory Layout Comparison
 
 ```
-Stack:              Heap:
-┌─────────────┐     ┌─────────────────┐
-│ let x = 5   │     │                 │
-│ ┌─────────┐ │     │                 │
-│ │    5    │ │     │                 │
-│ └─────────┘ │     │                 │
-│             │     │                 │
-│ let b = Box │     │  ┌───────────┐  │
-│ ┌─────────┐ │     │  │     5     │  │
-│ │  ptr ───┼─┼─────┼──│           │  │
-│ └─────────┘ │     │  └───────────┘  │
-└─────────────┘     └─────────────────┘
+Stack: Heap:
+ 
+ let x = 5 
+ 
+ 5 
+ 
+ 
+ let b = Box 
+ 5 
+ ptr 
+ 
+ 
 ```
 
 ## สรุป
