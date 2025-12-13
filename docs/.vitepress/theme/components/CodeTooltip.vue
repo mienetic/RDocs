@@ -52,9 +52,39 @@ const handleMouseLeave = () => {
   showTooltip.value = false
 }
 
-const handleClick = () => {
+const handleClick = (e: MouseEvent) => {
+  const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0
+  
+  // On touch devices: show tooltip (user will click footer button to navigate)
+  if (isTouchDevice) {
+    if (!showTooltip.value) {
+      e.preventDefault()
+      showTooltip.value = true
+      nextTick(updateTooltipPosition)
+    }
+    return
+  }
+  
+  // On desktop: redirect directly (hover already shows tooltip)
+  if (typeInfo.value?.link) {
+    e.preventDefault()
+    window.location.href = typeInfo.value.link
+  }
+}
+
+// Navigate when clicking the footer link
+const handleLinkClick = (e: MouseEvent) => {
+  e.preventDefault()
+  e.stopPropagation()
   if (typeInfo.value?.link) {
     window.location.href = typeInfo.value.link
+  }
+}
+
+// Hide tooltip when clicking outside
+const handleClickOutside = (e: MouseEvent) => {
+  if (showTooltip.value && triggerRef.value && !triggerRef.value.contains(e.target as Node)) {
+    showTooltip.value = false
   }
 }
 
@@ -62,11 +92,13 @@ const handleClick = () => {
 onMounted(() => {
   window.addEventListener('scroll', updateTooltipPosition, true)
   window.addEventListener('resize', updateTooltipPosition)
+  document.addEventListener('click', handleClickOutside, true)
 })
 
 onUnmounted(() => {
   window.removeEventListener('scroll', updateTooltipPosition, true)
   window.removeEventListener('resize', updateTooltipPosition)
+  document.removeEventListener('click', handleClickOutside, true)
 })
 </script>
 
@@ -104,8 +136,12 @@ onUnmounted(() => {
         <div class="tooltip-description">
           {{ typeInfo.description }}
         </div>
-        <div v-if="typeInfo.link" class="tooltip-footer">
-          <Icon icon="lucide:mouse-pointer-click" :width="14" :height="14" />
+        <div 
+          v-if="typeInfo.link" 
+          class="tooltip-footer"
+          @click="handleLinkClick"
+        >
+          <Icon icon="lucide:external-link" :width="14" :height="14" />
           <span class="tooltip-link-hint">คลิกเพื่อดูเพิ่มเติม</span>
         </div>
       </div>
@@ -173,6 +209,12 @@ onUnmounted(() => {
   align-items: center;
   gap: 6px;
   color: var(--vp-c-brand-2);
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.tooltip-footer:hover {
+  color: var(--vp-c-brand-1);
 }
 
 .tooltip-link-hint {

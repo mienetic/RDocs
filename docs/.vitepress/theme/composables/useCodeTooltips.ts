@@ -10,8 +10,12 @@ export const tooltipState = reactive({
     y: 0
 })
 
+
 export function useCodeTooltips() {
     let hideTimeout: number | null = null
+
+    // Detect if device is touch-enabled
+    const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0
 
     const showTooltip = (trigger: HTMLElement, typeName: string) => {
         if (hideTimeout) {
@@ -148,22 +152,66 @@ export function useCodeTooltips() {
     }
 
     const handleMouseOver = (e: MouseEvent) => {
+        // Skip mouseover on touch devices to prevent conflict with click
+        if (isTouchDevice) return
+
         const target = e.target as HTMLElement
         if (target.hasAttribute('data-rust-type')) {
             const typeName = target.getAttribute('data-rust-type')!
             target.style.backgroundColor = 'var(--vp-c-brand-soft)'
             showTooltip(target, typeName)
+            // Attach hover handlers to tooltip after showing
+            setTimeout(attachTooltipHoverHandlers, 50)
         }
-        // Keep tooltip open when hovering the tooltip itself? 
-        // Logic moved to GlobalCodeTooltip checks or we rely on delay?
-        // Simple delay is usually enough.
     }
 
     const handleMouseOut = (e: MouseEvent) => {
+        // Skip mouseout on touch devices
+        if (isTouchDevice) return
+
         const target = e.target as HTMLElement
         if (target.hasAttribute('data-rust-type')) {
+            // Check if mouse is moving to the tooltip
+            const relatedTarget = e.relatedTarget as HTMLElement
+            const tooltip = document.querySelector('.rust-type-tooltip')
+
+            // Don't hide if moving to tooltip
+            if (tooltip && relatedTarget && tooltip.contains(relatedTarget)) {
+                return
+            }
+
             target.style.backgroundColor = ''
             hideTooltip()
+        }
+    }
+
+    // Keep tooltip visible when hovering over it
+    const handleTooltipMouseEnter = () => {
+        if (hideTimeout) {
+            clearTimeout(hideTimeout)
+            hideTimeout = null
+        }
+    }
+
+    const handleTooltipMouseLeave = () => {
+        // Clear background from all highlighted types
+        const highlightedTypes = document.querySelectorAll('[data-rust-type]')
+        highlightedTypes.forEach(el => {
+            const element = el as HTMLElement
+            if (element.style.backgroundColor) {
+                element.style.backgroundColor = ''
+            }
+        })
+        hideTooltip()
+    }
+
+    // Attach hover handlers to tooltip after it's created
+    const attachTooltipHoverHandlers = () => {
+        const tooltip = document.querySelector('.rust-type-tooltip')
+        if (tooltip && !tooltip.hasAttribute('data-hover-attached')) {
+            tooltip.setAttribute('data-hover-attached', 'true')
+            tooltip.addEventListener('mouseenter', handleTooltipMouseEnter)
+            tooltip.addEventListener('mouseleave', handleTooltipMouseLeave)
         }
     }
 
@@ -172,10 +220,23 @@ export function useCodeTooltips() {
         if (target.hasAttribute('data-rust-type')) {
             const typeName = target.getAttribute('data-rust-type')!
             const typeInfo = rustTypes[typeName]
+
+            // On touch devices: show tooltip (user will click footer button to navigate)
+            if (isTouchDevice) {
+                if (!tooltipState.visible || tooltipState.typeName !== typeName) {
+                    e.preventDefault()
+                    e.stopPropagation()
+                    target.style.backgroundColor = 'var(--vp-c-brand-soft)'
+                    showTooltip(target, typeName)
+                }
+                return
+            }
+
+            // On desktop: redirect directly (hover already shows tooltip)
             if (typeInfo?.link) {
                 e.preventDefault()
                 e.stopPropagation()
-                const basePath = '/RDocs' // Base URL from config
+                const basePath = '/RDocs'
                 window.location.href = basePath + typeInfo.link
             }
         }

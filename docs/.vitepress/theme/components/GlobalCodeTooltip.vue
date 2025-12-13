@@ -19,6 +19,53 @@ const typeInfo = computed(() => {
   if (!tooltipState.typeName) return undefined
   return getTypeInfo(tooltipState.typeName)
 })
+
+const handleLinkClick = (e: MouseEvent) => {
+  e.preventDefault()
+  e.stopPropagation()
+  if (typeInfo.value?.link) {
+    const basePath = '/RDocs'
+    window.location.href = basePath + typeInfo.value.link
+  }
+}
+
+// Close tooltip when clicking outside
+const handleClickOutside = (e: MouseEvent) => {
+  if (!tooltipState.visible) return
+  
+  const tooltip = document.querySelector('.rust-type-tooltip')
+  const target = e.target as HTMLElement
+  
+  // Don't close if clicking inside the tooltip
+  if (tooltip && tooltip.contains(target)) {
+    return
+  }
+  
+  // Don't close if clicking on a rust type trigger (will show new tooltip)
+  if (target.hasAttribute('data-rust-type') || target.closest('[data-rust-type]')) {
+    return
+  }
+  
+  // Clear background from all highlighted types before closing
+  const highlightedTypes = document.querySelectorAll('[data-rust-type]')
+  highlightedTypes.forEach(el => {
+    const element = el as HTMLElement
+    if (element.style.backgroundColor) {
+      element.style.backgroundColor = ''
+    }
+  })
+  
+  // Close tooltip
+  tooltipState.visible = false
+}
+
+watch(() => tooltipState.visible, (visible) => {
+  if (visible) {
+    document.addEventListener('click', handleClickOutside, true)
+  } else {
+    document.removeEventListener('click', handleClickOutside, true)
+  }
+})
 </script>
 
 <template>
@@ -40,8 +87,12 @@ const typeInfo = computed(() => {
           {{ typeInfo.description }}
         </div>
         
-        <div v-if="typeInfo.link" class="tooltip-footer">
-          <Icon icon="lucide:mouse-pointer-click" width="14" height="14" />
+        <div 
+          v-if="typeInfo.link" 
+          class="tooltip-footer"
+          @click="handleLinkClick"
+        >
+          <Icon icon="lucide:external-link" width="14" height="14" />
           <span class="tooltip-link-hint">คลิกเพื่อดูเพิ่มเติม</span>
         </div>
       </div>
@@ -58,11 +109,7 @@ const typeInfo = computed(() => {
   border: 1px solid var(--vp-c-border);
   border-radius: 8px;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
-  pointer-events: none; /* Let clicks pass through to the trigger element if strictly visual, but wait... */
-  /* Actually, to allow clicking the link inside (if we had one), pointer-events needs to be auto. 
-     But our link is usually on the trigger or we want the tooltip to be interactive?
-     The old code had pointer-events: none initially, then auto when visible.
-  */
+  pointer-events: auto; /* Allow clicks on tooltip and its buttons */
   transition: opacity 0.15s ease, transform 0.15s ease;
 }
 
@@ -98,6 +145,12 @@ const typeInfo = computed(() => {
   padding-top: 8px;
   border-top: 1px solid var(--vp-c-border);
   color: var(--vp-c-brand-1);
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.tooltip-footer:hover {
+  color: var(--vp-c-brand-2);
 }
 
 .tooltip-link-hint {
