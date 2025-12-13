@@ -118,4 +118,4 @@ fn main() {
 
 ---
 
-[← Iterator Ext](./iterator-ext) | [Standard Library](../std/prelude)
+[← Iterator Ext](./iterator-ext) | [Standard Library](../std/index)

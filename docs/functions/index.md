@@ -43,7 +43,7 @@ Function ที่ไม่มีวัน Return (เช่น `loop`, `panic!`
 - [cmp::minmax](./cmp#minmax) - ทั้ง min และ max
 
 ### Convert Functions
-- [convert::identity](./convert#identity) - Return input ไม่เปลี่ยน
+- [convert::identity](../std/convert#identity) - Return input ไม่เปลี่ยน
 
 ### Future Functions
 - [future::ready](./future#ready) - Future ที่พร้อมทันที
